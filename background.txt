@@ -1,0 +1,52 @@
+let countdown;
+let countdownInterval; 
+
+function closeAllTabsAndOpenNewTab() {
+    // Get all tabs
+    chrome.tabs.query({}, function (tabs) {
+      // Close each tab
+      tabs.forEach(function (tab) {
+        chrome.tabs.remove(tab.id);
+      });
+  
+      // Open a new tab
+      chrome.tabs.create({});
+    });
+}
+
+function startCountdown(seconds) {
+    countdown = seconds; 
+
+    // Show countdown
+    countdownInterval = setInterval(function () {
+        countdown--;
+
+        if (countdown <= 0) {
+            closeAllTabsAndOpenNewTab();
+
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+}
+
+function clearCountdown() {
+    clearInterval(countdownInterval);
+    countdown = undefined;
+}
+
+
+function getCountdown() {
+    return countdown;
+}
+
+// Listen for messages from the popup
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.action === 'startCountdown') {
+       startCountdown(request.seconds); 
+    } else if (request.action === 'getCountdown') {
+        sendResponse({ countdown: getCountdown() });
+    } else if (request.action === 'clearCountdown') {
+        clearCountdown();
+    }
+});
+
