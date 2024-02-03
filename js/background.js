@@ -8,15 +8,14 @@ function closeAllTabsAndOpenNewTab() {
         tabs.forEach(function (tab) {
             chrome.tabs.remove(tab.id);
         });
-
-        // Open a new tab
-        chrome.tabs.create({});
     });
+    // Open a new tab
+    chrome.tabs.create({});
 }
 
 function startCountdown(seconds) {
     countdown = seconds;
-    console.log("1st part: initially says " + seconds + " seconds");
+    console.log("1st part: initially says " + countdown + " seconds");
     // Show countdown
     countdownInterval = setInterval(function () {
         countdown--;
