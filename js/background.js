@@ -1,55 +1,55 @@
-let countdown;
-let countdownInterval;
+    let countdown;
+    let countdownInterval;
 
-function closeAllTabsAndOpenNewTab() {
-    // Get all tabs
-    chrome.tabs.query({}, function (tabs) {
-        // Close each tab
-        tabs.forEach(function (tab) {
-            chrome.tabs.remove(tab.id);
+    function closeAllTabsAndOpenNewTab() {
+        // Get all tabs
+        chrome.tabs.query({}, function (tabs) {
+            // Close each tab
+            tabs.forEach(function (tab) {
+                chrome.tabs.remove(tab.id);
+            });
         });
-    });
-    // Open a new tab
-    chrome.tabs.create({});
-}
+        // Open a new tab
+        chrome.tabs.create({});
+    }
 
-function startCountdown(seconds) {
-    countdown = seconds;
-    countdownStart = performance.now();
+    function startCountdown(seconds) {
+        countdown = seconds;
+        countdownStart = performance.now();
 
-    countdownInterval = setInterval(function () {
-        const elapsedMilliseconds = performance.now() - countdownStart;
-        const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
-        countdown = seconds - elapsedSeconds;
+        countdownInterval = setInterval(function () {
+            const elapsedMilliseconds = performance.now() - countdownStart;
+            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+            countdown = seconds - elapsedSeconds;
 
-        if (countdown <= 0) {
-            closeAllTabsAndOpenNewTab();
+            if (countdown <= 0) {
+                closeAllTabsAndOpenNewTab();
+                clearCountdown();
+            }
+
+        }, 200);
+    }
+
+    function clearCountdown() {
+        clearInterval(countdownInterval);
+        countdown = undefined;
+    }
+
+    function getCountdown() {
+        return countdown;
+    }
+
+    // Listen for messages from the popup
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+        if (request.action === "startCountdown") {
+            // console.log("Start Countdown");
+            // console.log(request);
+            startCountdown(request.data.seconds);
+        } else if (request.action === "getCountdown") {
+            // console.log("Get Countdown");
+            sendResponse({ countdown: getCountdown() });
+        } else if (request.action === "clearCountdown") { // for cancelling
+            // console.log("Clear Countdown");
             clearCountdown();
         }
-
-    }, 1000);
-}
-
-function clearCountdown() {
-    clearInterval(countdownInterval);
-    countdown = undefined;
-}
-
-function getCountdown() {
-    return countdown;
-}
-
-// Listen for messages from the popup
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.action === "startCountdown") {
-        console.log("Start Countdown");
-        // console.log(request);
-        startCountdown(request.data.seconds);
-    } else if (request.action === "getCountdown") {
-        // console.log("Get Countdown");
-        sendResponse({ countdown: getCountdown() });
-    } else if (request.action === "clearCountdown") { // for cancelling
-        // console.log("Clear Countdown");
-        clearCountdown();
-    }
-});
+    });

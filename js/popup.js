@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCountdownDisplay() {
         sendMessage("getCountdown", null, function (response) {
-            console.log(response);
+            // console.log(response);
             if (response && response.countdown !== undefined) {
                 insertTime(response.countdown);
                 ticking = true;
@@ -81,5 +81,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateCountdownDisplay();
 
-    setInterval(updateCountdownDisplay, 1000);
+    setInterval(updateCountdownDisplay, 100);
 });
