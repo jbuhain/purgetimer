@@ -8,25 +8,25 @@ function closeAllTabsAndOpenNewTab() {
         tabs.forEach(function (tab) {
             chrome.tabs.remove(tab.id);
         });
-
-        // Open a new tab
-        chrome.tabs.create({});
     });
+    // Open a new tab
+    chrome.tabs.create({});
 }
 
 function startCountdown(seconds) {
     countdown = seconds;
-    console.log("1st part: initially says " + seconds + " seconds");
-    // Show countdown
+    countdownStart = performance.now();
+
     countdownInterval = setInterval(function () {
-        countdown--;
-        console.log("Decrement to " + countdown + " seconds");
-        // TODO: Store the countdown to seconds and update this in realtime and send this value to popup if they want.
+        const elapsedMilliseconds = performance.now() - countdownStart;
+        const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+        countdown = seconds - elapsedSeconds;
+
         if (countdown <= 0) {
-            // TODO: Implement/Test closeAllTabsAndOpenNewTab() 
-            closeAllTabsAndOpenNewTab(); 
+            closeAllTabsAndOpenNewTab();
             clearCountdown();
         }
+
     }, 1000);
 }
 
