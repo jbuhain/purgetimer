@@ -1,16 +1,53 @@
-let initial_time = 5;
-let ticking = false;
+let defaultTime = 5;
+let started = false;
+let paused = true;
+document.getElementById("pauseButton").disabled = true;
+document.getElementById("resumeButton").disabled = true;
+document.getElementById("resetButton").disabled = true;
 
 document.addEventListener("DOMContentLoaded", function () {
 
     function checkStatus() {
-        if (!ticking) return;
+        /// !started && paused: BEGINNING timer hasn't started, show duration buttons and start timer, hide pause,resume,reset
+        if(!started && paused) {
+            durationButtons.forEach(button => button.disabled = false);
+            document.getElementById("timerButton").disabled = false;
 
-        document.getElementById("timerButton").disabled = true;
-        
+            document.getElementById("pauseButton").disabled = true;
+            document.getElementById("resumeButton").disabled = true;
+            document.getElementById("resetButton").disabled = true;
+        }  
+        // started && !paused : TIMER IS PLAYING show pause and reset and hide duration buttons, start timer, resume 
+        else if(started && !paused) {
+            document.getElementById("pauseButton").disabled = false;
+            document.getElementById("resetButton").disabled = false;
 
-        // if (paused) return;
-        durationButtons.forEach(button => button.disabled = true);
+            durationButtons.forEach(button => button.disabled = true);
+            document.getElementById("timerButton").disabled = true;
+            document.getElementById("resumeButton").disabled = true;
+            
+        }
+        // started && paused : PAUSED TIMER show resume and reset buttons and hide start timer, and pause, and duration buttons
+        else if(started && paused) {
+            document.getElementById("resumeButton").disabled = false;
+            document.getElementById("resetButton").disabled = false;
+
+            document.getElementById("timerButton").disabled = true;
+            document.getElementById("pauseButton").disabled = true;
+            durationButtons.forEach(button => button.disabled = true);
+        }
+        // !started && !paused : BUG? can't happen?
+        else {
+            // TODO: Bug? investigate why is this happening
+            // NOTE: this occurs when start timer is clicked!
+            // console.log("!started and !paused ... bug?");
+            document.getElementById("pauseButton").disabled = false;
+            document.getElementById("resetButton").disabled = false;
+
+            durationButtons.forEach(button => button.disabled = true);
+            document.getElementById("timerButton").disabled = true;
+            document.getElementById("resumeButton").disabled = true;
+        }
     }
 
     function sendMessage(action, data, callback) {
@@ -19,20 +56,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCountdownDisplay() {
         sendMessage("getCountdown", null, function (response) {
+
             if (response && response.countdown !== undefined) {
                 insertTime(response.countdown);
-                ticking = response.paused;
+                started = response.paused;
+                paused = response.paused;
                 checkStatus();
             }
         });
     }
 
     function reset() {
-        initial_time = 5;
-        ticking = false;
-        document.getElementById("timerButton").disabled = false;
-        // if (paused) return;
-        durationButtons.forEach(button => button.disabled = false);
+        defaultTime = 5;
+        started = false;
+        paused = true;
+        checkStatus();
     }
 
     function insertTime(seconds) {
@@ -56,8 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const durationButtons = document.querySelectorAll(".duration-button");
 
     function handleButtonClick(button) {
-        initial_time = parseInt(button.dataset.duration, 10);
-        insertTime(initial_time);
+        defaultTime = parseInt(button.dataset.duration, 10);
+        insertTime(defaultTime);
     }
 
     durationButtons.forEach(button => {
@@ -65,16 +103,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("pauseButton").addEventListener("click", () => sendMessage("pauseCountdown"));
-    document.getElementById("resumeButton").addEventListener("click", () => sendMessage("resumeCountdown"));
+
+    document.getElementById("resumeButton").addEventListener("click", function () {
+        sendMessage("resumeCountdown")
+        started = true;
+        paused = false;
+        checkStatus();
+    });
 
     document.getElementById("resetButton").addEventListener("click", function () {
         sendMessage("resetCountdown");
         reset();
+        insertTime(defaultTime);
     });
 
     document.getElementById("timerButton").addEventListener("click", function () {
-        sendMessage("startCountdown", { seconds: initial_time });
-        ticking = true;
+        sendMessage("startCountdown", { seconds: defaultTime });
+        started = true;
+        paused = false;
         checkStatus();
     });
 
