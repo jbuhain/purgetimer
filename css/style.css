@@ -1,46 +1,29 @@
 body {
     height: 100vh;
+    width: 200vh;
     margin: 0;
     font-family: Arial, sans-serif;
-  }
-  
-  #timer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+}
+
+div#timers-block {
+    display:flex;
+    flex-direction: row;
+}
+
+.duration-button {
+
+}
+
+#timer {
     font-size: 2rem;
     cursor: pointer;
     padding: 0px;
     margin: 0;
     outline: none;
     white-space: nowrap;
-  }
-  
-  #timer.editable {
-    padding: 0px;
-    margin: 0;
-  }
-
-
-
-  .time-wheel {
-    width: 200px;
-    height: 200px;
-    background-color: #f0f0f0;
-    border-radius: 50%;
-    position: relative;
-    margin-bottom: 20px;
-    overflow: hidden; /* Add this line to hide the overflowing filler */
-}
-
-.filler {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    clip-path: polygon(0 0, 100% 50%, 0 100%); /* Use clip-path to create the circular fill */
-    background-color: red;
-    transform-origin: 100% 50%; /* Set the transform origin to the right center */
-}
-
-#minutesInput {
-    margin-right: 10px;
+    text-align: center;
 }

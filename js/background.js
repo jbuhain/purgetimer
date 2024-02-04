@@ -1,5 +1,8 @@
 let countdown;
 let countdownInterval;
+let countdownStart;
+let paused = false;
+let remainingTime;
 
 function closeAllTabsAndOpenNewTab() {
     // Get all tabs
@@ -18,21 +21,45 @@ function startCountdown(seconds) {
     countdownStart = performance.now();
 
     countdownInterval = setInterval(function () {
-        const elapsedMilliseconds = performance.now() - countdownStart;
-        const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
-        countdown = seconds - elapsedSeconds;
+        if (!paused) {
+            const elapsedMilliseconds = performance.now() - countdownStart;
+            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+            countdown = seconds - elapsedSeconds;
 
-        if (countdown <= 0) {
-            closeAllTabsAndOpenNewTab();
-            clearCountdown();
+            if (countdown <= 0) {
+                closeAllTabsAndOpenNewTab();
+                clearCountdown();
+            }
         }
+    }, 200);
+}
 
-    }, 1000);
+function pauseCountdown() {
+    console.log("Pausing countdown", + countdown);
+    clearInterval(countdownInterval); // Clear existing interval
+    paused = true;
+    remainingTime = countdown; // Store remaining time
+}
+
+function resumeCountdown() {
+    paused = false;
+    clearInterval(countdownInterval); // Clear existing interval
+    if (remainingTime > 0) {
+        countdownStart = performance.now();
+        startCountdown(remainingTime);
+    } else {
+        // Handle case when the remaining time is already expired
+        closeAllTabsAndOpenNewTab();
+        clearCountdown();
+    }
 }
 
 function clearCountdown() {
     clearInterval(countdownInterval);
     countdown = undefined;
+    remainingTime = undefined; // Clear remaining time
+    paused = false;
+    countdownStart = undefined;
 }
 
 function getCountdown() {
@@ -42,14 +69,16 @@ function getCountdown() {
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "startCountdown") {
-        console.log("Start Countdown");
-        // console.log(request);
         startCountdown(request.data.seconds);
     } else if (request.action === "getCountdown") {
-        // console.log("Get Countdown");
-        sendResponse({ countdown: getCountdown() });
-    } else if (request.action === "clearCountdown") { // for cancelling
-        // console.log("Clear Countdown");
+        sendResponse({ countdown: getCountdown(), paused: paused });
+    } else if (request.action === "clearCountdown") {
+        clearCountdown();
+    } else if (request.action === "pauseCountdown") {
+        pauseCountdown();
+    } else if (request.action === "resumeCountdown") {
+        resumeCountdown();
+    } else if (request.action === "resetCountdown") {
         clearCountdown();
     }
 });
