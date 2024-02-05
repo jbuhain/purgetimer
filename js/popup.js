@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let defaultTime = 5;
     let programStatus;
-    document.getElementById("pauseResumeButton").disabled = true;
-    document.getElementById("resetButton").disabled = true;
     const durationButtons = document.querySelectorAll(".duration-button");
 
     function checkStatus() {
@@ -46,6 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
         sendMessage("getCountdown", null, function (response) {
             if (response && response.countdown !== undefined) {
                 insertTime(response.countdown);
+                programStatus = response.programStatus;
+                checkStatus();
+            }
+            if (response && response.programStatus == "NOT_STARTED") {
                 programStatus = response.programStatus;
                 checkStatus();
             }
@@ -121,5 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
             checkStatus();
         });
 
+    updateCountdownDisplay();
     setInterval(updateCountdownDisplay, 100);
 });
