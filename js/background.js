@@ -6,14 +6,11 @@ let remainingTime;
 let programStatus = "NOT_STARTED";
 
 function closeAllTabsAndOpenNewTab() {
-    // Get all tabs
     chrome.tabs.query({}, function (tabs) {
-        // Close each tab
         tabs.forEach(function (tab) {
             chrome.tabs.remove(tab.id);
         });
     });
-    // Open a new tab
     chrome.tabs.create({});
 }
 
@@ -23,7 +20,7 @@ function startCountdown(seconds) {
     programStatus = "PLAYING";
 
     countdownInterval = setInterval(function () {
-        if (!paused) {
+        if (programStatus !== "PAUSED") { 
             const elapsedMilliseconds = performance.now() - countdownStart;
             const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
             countdown = seconds - elapsedSeconds;
@@ -37,16 +34,13 @@ function startCountdown(seconds) {
 }
 
 function pauseCountdown() {
-    // console.log("Pausing countdown", + countdown);
-    clearInterval(countdownInterval); // Clear existing interval
-    paused = true;
-    remainingTime = countdown; // Store remaining time
+    clearInterval(countdownInterval);
+    remainingTime = countdown;
     programStatus = "PAUSED";
 }
 
 function resumeCountdown() {
-    paused = false;
-    clearInterval(countdownInterval); // Clear existing interval
+    clearInterval(countdownInterval); 
     if (remainingTime > 0) {
         countdownStart = performance.now();
         startCountdown(remainingTime);
@@ -61,8 +55,7 @@ function resumeCountdown() {
 function clearCountdown() {
     clearInterval(countdownInterval);
     countdown = undefined;
-    remainingTime = undefined; // Clear remaining time
-    paused = false;
+    remainingTime = undefined;
     countdownStart = undefined;
     programStatus = "NOT_STARTED";
 }
@@ -76,7 +69,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "startCountdown") {
         startCountdown(request.data.seconds);
     } else if (request.action === "getCountdown") {
-        sendResponse({ countdown: getCountdown(), paused: paused, programStatus: programStatus });
+        sendResponse({ countdown: getCountdown(), programStatus: programStatus });
     } else if (request.action === "clearCountdown") {
         clearCountdown();
     } else if (request.action === "pauseCountdown") {

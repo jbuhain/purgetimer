@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "Pause";
                 document.getElementById("resetButton").disabled = false;
-
+                
+                document.getElementById("timerButton").disabled = true; 
                 durationButtons.forEach((button) => (button.disabled = true));
-                document.getElementById("timerButton").disabled = true;
                 break;
 
             case "PAUSED":
@@ -42,27 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCountdownDisplay() {
         sendMessage("getCountdown", null, function (response) {
-            if (response && response.countdown !== undefined) {
-                insertTime(response.countdown);
-                programStatus = response.programStatus;
-                checkStatus();
-            }
-            if (response && response.programStatus == "NOT_STARTED") {
+            if (response) {
+                if(response.countdown !== undefined) insertTime(response.countdown);
+
                 programStatus = response.programStatus;
                 checkStatus();
             }
         });
     }
 
-    function reset() {
-        defaultTime = 5;
-        programStatus = "NOT_STARTED";
-        checkStatus();
-    }
-
     function insertTime(seconds) {
         if (typeof seconds !== "number" || isNaN(seconds) || seconds < 0) {
-            // Handle invalid input
             alert("Invalid input");
             return;
         }
@@ -70,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
 
-        // Add leading zeros if needed
         const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
         const formattedSeconds =
             remainingSeconds < 10
@@ -96,13 +85,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("click", function () {
             if (programStatus === "PAUSED") {
                 sendMessage("resumeCountdown");
-                programStatus = "PLAYING";
             } else if (programStatus === "NOT_STARTED") {
                 sendMessage("startCountdown", { seconds: defaultTime });
-                programStatus = "PLAYING";
             } else {
                 sendMessage("pauseCountdown");
-                programStatus = "PAUSED";
             }
             checkStatus();
         });
@@ -111,15 +97,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("resetButton")
         .addEventListener("click", function () {
             sendMessage("resetCountdown");
-            reset();
             insertTime(defaultTime);
+            checkStatus();
         });
 
     document
         .getElementById("timerButton")
         .addEventListener("click", function () {
             sendMessage("startCountdown", { seconds: defaultTime });
-            programStatus = "PLAYING";
             checkStatus();
         });
 
