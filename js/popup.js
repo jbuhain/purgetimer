@@ -1,50 +1,40 @@
-let defaultTime = 5;
-let started = false; //TODO: Instead of having started and paused booleans, have an ENUM that has 4 stages and switch that around between backend
-let paused = true;
-document.getElementById("pauseButton").disabled = true;
-document.getElementById("resumeButton").disabled = true;
-document.getElementById("resetButton").disabled = true;
-
 document.addEventListener("DOMContentLoaded", function () {
+    let defaultTime = 5;
+    let programStatus;
+    document.getElementById("pauseResumeButton").disabled = true;
+    document.getElementById("resetButton").disabled = true;
+    const durationButtons = document.querySelectorAll(".duration-button");
+
     function checkStatus() {
-        /// !started && paused: BEGINNING timer hasn't started, show duration buttons and start timer, hide pause,resume,reset
-        if (!started && paused) {
-            durationButtons.forEach((button) => (button.disabled = false));
-            document.getElementById("timerButton").disabled = false;
+        switch (programStatus) {
+            case "NOT_STARTED":
+                durationButtons.forEach((button) => (button.disabled = false));
+                document.getElementById("timerButton").disabled = false;
 
-            document.getElementById("pauseButton").disabled = true;
-            document.getElementById("resumeButton").disabled = true;
-            document.getElementById("resetButton").disabled = true;
-        }
-        // started && !paused : TIMER IS PLAYING show pause and reset and hide duration buttons, start timer, resume
-        else if (started && !paused) {
-            document.getElementById("pauseButton").disabled = false;
-            document.getElementById("resetButton").disabled = false;
+                document.getElementById("pauseResumeButton").disabled = true;
+                document.getElementById("resetButton").disabled = true;
+                break;
 
-            durationButtons.forEach((button) => (button.disabled = true));
-            document.getElementById("timerButton").disabled = true;
-            document.getElementById("resumeButton").disabled = true;
-        }
-        // started && paused : PAUSED TIMER show resume and reset buttons and hide start timer, and pause, and duration buttons
-        else if (started && paused) {
-            document.getElementById("resumeButton").disabled = false;
-            document.getElementById("resetButton").disabled = false;
+            case "PLAYING":
+                document.getElementById("pauseResumeButton").disabled = false;
+                document.getElementById("pauseResumeButton").innerText = "Pause";
+                document.getElementById("resetButton").disabled = false;
 
-            document.getElementById("timerButton").disabled = true;
-            document.getElementById("pauseButton").disabled = true;
-            durationButtons.forEach((button) => (button.disabled = true));
-        }
-        // !started && !paused : BUG? can't happen?
-        else {
-            // TODO: Bug? investigate why is this happening
-            // NOTE: this occurs when start timer is clicked!
-            // console.log("!started and !paused ... bug?");
-            document.getElementById("pauseButton").disabled = false;
-            document.getElementById("resetButton").disabled = false;
+                durationButtons.forEach((button) => (button.disabled = true));
+                document.getElementById("timerButton").disabled = true;
+                break;
 
-            durationButtons.forEach((button) => (button.disabled = true));
-            document.getElementById("timerButton").disabled = true;
-            document.getElementById("resumeButton").disabled = true;
+            case "PAUSED":
+                document.getElementById("pauseResumeButton").disabled = false;
+                document.getElementById("pauseResumeButton").innerText = "Resume";
+                document.getElementById("resetButton").disabled = false;
+
+                document.getElementById("timerButton").disabled = true;
+                durationButtons.forEach((button) => (button.disabled = true));
+                break;
+
+            default:
+                alert("bug");
         }
     }
 
@@ -56,18 +46,15 @@ document.addEventListener("DOMContentLoaded", function () {
         sendMessage("getCountdown", null, function (response) {
             if (response && response.countdown !== undefined) {
                 insertTime(response.countdown);
-                started = response.paused;
-                paused = response.paused;
+                programStatus = response.programStatus;
                 checkStatus();
             }
         });
     }
 
     function reset() {
-        // defaultTime = 5;
-
-        started = false;
-        paused = true;
+        defaultTime = 5;
+        programStatus = "NOT_STARTED";
         checkStatus();
     }
 
@@ -88,11 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? `0${remainingSeconds}`
                 : `${remainingSeconds}`;
 
-        let countdownDisplay = document.getElementById("timerDisplay");
-        countdownDisplay.innerText = `${formattedMinutes}:${formattedSeconds}`;
+        document.getElementById(
+            "timerDisplay"
+        ).innerText = `${formattedMinutes}:${formattedSeconds}`;
     }
-
-    const durationButtons = document.querySelectorAll(".duration-button");
 
     function handleButtonClick(button) {
         defaultTime = parseInt(button.dataset.duration, 10);
@@ -104,15 +90,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document
-        .getElementById("pauseButton")
-        .addEventListener("click", () => sendMessage("pauseCountdown"));
-
-    document
-        .getElementById("resumeButton")
+        .getElementById("pauseResumeButton")
         .addEventListener("click", function () {
-            sendMessage("resumeCountdown");
-            started = true;
-            paused = false;
+            if (programStatus === "PAUSED") {
+                sendMessage("resumeCountdown");
+                programStatus = "PLAYING";
+            } else if (programStatus === "NOT_STARTED") {
+                sendMessage("startCountdown", { seconds: defaultTime });
+                programStatus = "PLAYING";
+            } else {
+                sendMessage("pauseCountdown");
+                programStatus = "PAUSED";
+            }
             checkStatus();
         });
 
@@ -128,12 +117,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("timerButton")
         .addEventListener("click", function () {
             sendMessage("startCountdown", { seconds: defaultTime });
-            started = true;
-            paused = false;
+            programStatus = "PLAYING";
             checkStatus();
         });
-
-    updateCountdownDisplay();
 
     setInterval(updateCountdownDisplay, 100);
 });

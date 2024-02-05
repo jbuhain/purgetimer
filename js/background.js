@@ -3,6 +3,7 @@ let countdownInterval;
 let countdownStart;
 let paused = false;
 let remainingTime;
+let programStatus = "NOT_STARTED";
 
 function closeAllTabsAndOpenNewTab() {
     // Get all tabs
@@ -19,6 +20,7 @@ function closeAllTabsAndOpenNewTab() {
 function startCountdown(seconds) {
     countdown = seconds;
     countdownStart = performance.now();
+    programStatus = "PLAYING";
 
     countdownInterval = setInterval(function () {
         if (!paused) {
@@ -35,10 +37,11 @@ function startCountdown(seconds) {
 }
 
 function pauseCountdown() {
-    console.log("Pausing countdown", + countdown);
+    // console.log("Pausing countdown", + countdown);
     clearInterval(countdownInterval); // Clear existing interval
     paused = true;
     remainingTime = countdown; // Store remaining time
+    programStatus = "PAUSED";
 }
 
 function resumeCountdown() {
@@ -52,6 +55,7 @@ function resumeCountdown() {
         closeAllTabsAndOpenNewTab();
         clearCountdown();
     }
+    programStatus = "PLAYING";
 }
 
 function clearCountdown() {
@@ -60,6 +64,7 @@ function clearCountdown() {
     remainingTime = undefined; // Clear remaining time
     paused = false;
     countdownStart = undefined;
+    programStatus = "NOT_STARTED";
 }
 
 function getCountdown() {
@@ -71,7 +76,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "startCountdown") {
         startCountdown(request.data.seconds);
     } else if (request.action === "getCountdown") {
-        sendResponse({ countdown: getCountdown(), paused: paused });
+        sendResponse({ countdown: getCountdown(), paused: paused, programStatus: programStatus });
     } else if (request.action === "clearCountdown") {
         clearCountdown();
     } else if (request.action === "pauseCountdown") {
