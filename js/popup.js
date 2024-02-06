@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let defaultTime = 5;
+    let defaultTime = 0;
     let programStatus;
     const durationButtons = document.querySelectorAll(".duration-button");
 
@@ -12,10 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "start";
+                document.getElementById("timerInput").style.display = "block";
+                document.getElementById("timerDisplay").style.display = "none";
 
                 document.getElementById("resetButton").disabled = true;
                 document.getElementById("resetButton").style.display = "none";
-
 
                 break;
 
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "pause";
                 document.getElementById("resetButton").disabled = false;
                 document.getElementById("resetButton").style.display = "block";
+                document.getElementById("timerInput").style.display = "none";
+                document.getElementById("timerDisplay").style.display = "block";
 
                 
                 durationButtons.forEach((button) => {
@@ -37,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "resume";
                 document.getElementById("resetButton").disabled = false;
                 document.getElementById("resetButton").style.display = "block";
+                document.getElementById("timerInput").style.display = "none";
+                document.getElementById("timerDisplay").style.display = "block";
 
                 
 
@@ -68,8 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function insertTime(seconds) {
         if (typeof seconds !== "number" || isNaN(seconds) || seconds < 0) {
-            alert("Invalid input");
-            return;
+            return false;
         }
 
         const minutes = Math.floor(seconds / 60);
@@ -81,9 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? `0${remainingSeconds}`
                 : `${remainingSeconds}`;
 
+
+        // TODO: split this method into two parts. Format and one for setting text. 
         document.getElementById(
             "timerDisplay"
         ).innerText = `${formattedMinutes}:${formattedSeconds}`;
+        return true;
     }
 
     function handleButtonClick(button) {
@@ -101,7 +108,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (programStatus === "PAUSED") {
                 sendMessage("resumeCountdown");
             } else if (programStatus === "NOT_STARTED") {
-                sendMessage("startCountdown", { seconds: defaultTime });
+                if (defaultTime > 0){
+                    sendMessage("startCountdown", { seconds: defaultTime });
+                }
+                else {
+                    alert("Invalid input. Set the timer > 0 seconds.")
+                }
             } else {
                 sendMessage("pauseCountdown");
             }
@@ -112,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("timerInput").addEventListener("input", function () {
         // Remove non-numeric characters and limit the input length to 4 characters
         timerInput.value = timerInput.value.replace(/\D/g, '');
-
+        
         // Pad the input value with zeros from the right side until length is 4
         timerInput.value = timerInput.value.padStart(4, '0');
 
@@ -123,6 +135,20 @@ document.addEventListener("DOMContentLoaded", function () {
         if (timerInput.value.length >= 3) {
             timerInput.value = timerInput.value.slice(0, -2) + ':' + timerInput.value.slice(-2);
         }
+
+        if(timerInput.value==="00:00") {
+            timerInput.value = "";
+        }
+
+        const minutes = parseInt(timerInput.value.slice(0, 2));
+        const seconds = parseInt(timerInput.value.slice(3));
+
+
+
+        defaultTime = minutes * 60 + seconds;
+        // TODO:format the value given the method int insertTime() and set it to defaultTime
+        insertTime(defaultTime);
+
       });
 
     document

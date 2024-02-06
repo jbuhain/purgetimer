@@ -1,5 +1,6 @@
+
 body {
-    height: 500px;
+    height: 280px;
     width: 420px;
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@ body {
     /* justify-content: center;  */
     align-items: center; 
     background-color: #FEF0DC;
+
 }
 
 h1 {
@@ -29,22 +31,35 @@ h1#timerDisplay {
     font-size: 48px;
     font-weight: 200;
     color: #7a070748;
-    margin: 20px 0px 25px 0px; 
+    margin: 20px 0px 26px 0px; 
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
 }
 
-#timerInput {
+/* This is causing a big gap below body*/
+ #timerInput {
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
     font-size: 48px;
+    
     color: #7a070748;
     background-color:#FEF0DC;
+    
     border: none;
     text-align: right;
     padding-right: 8px;
     width: 153px;
-    font-variant-numeric: tabular-nums; /* Makes every number equal widths*/
-    letter-spacing: 2px;
+    
+    margin: 19px 0px 25px 3px; 
+    font-variant-numeric: tabular-nums; 
+    letter-spacing: 2px; 
+    line-height: 1;
+}
+
+#timerInput::placeholder {
+    font-size: 48px;
+    color: #5a575725;
 }
 
 
@@ -76,14 +91,6 @@ button#resetButton {
 
 
 #timerContainer {
-    display: inline-block; /* Ensure the container only takes the necessary width */
-}
+    display: inline-block; 
+} */
 
-#minutesSpan,
-#secondsSpan {
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-size: 36px; /* Adjust the font size for minutes and seconds */
-    font-weight: 200;
-    color: #7a070748;
-}
