@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
         switch (programStatus) {
             case "NOT_STARTED":
                 durationButtons.forEach((button) => (button.disabled = false));
-                document.getElementById("timerButton").disabled = false;
+                document.getElementById("pauseResumeButton").disabled = false;
+                document.getElementById("pauseResumeButton").innerText = "Start Timer";
 
-                document.getElementById("pauseResumeButton").disabled = true;
+                
                 document.getElementById("resetButton").disabled = true;
                 break;
 
@@ -18,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "Pause";
                 document.getElementById("resetButton").disabled = false;
                 
-                document.getElementById("timerButton").disabled = true; 
                 durationButtons.forEach((button) => (button.disabled = true));
                 break;
 
@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "Resume";
                 document.getElementById("resetButton").disabled = false;
 
-                document.getElementById("timerButton").disabled = true;
                 durationButtons.forEach((button) => (button.disabled = true));
                 break;
 
@@ -98,13 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("click", function () {
             sendMessage("resetCountdown");
             insertTime(defaultTime);
-            checkStatus();
-        });
-
-    document
-        .getElementById("timerButton")
-        .addEventListener("click", function () {
-            sendMessage("startCountdown", { seconds: defaultTime });
             checkStatus();
         });
 
