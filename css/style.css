@@ -1,29 +1,89 @@
 body {
-    height: 100vh;
-    width: 200vh;
+    height: 500px;
+    width: 420px;
     margin: 0;
-    font-family: Arial, sans-serif;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 200;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
+    /* justify-content: center;  */
+    align-items: center; 
+    background-color: #FEF0DC;
 }
 
-div#timers-block {
-    display:flex;
-    flex-direction: row;
-}
-
-.duration-button {
-
-}
-
-#timer {
-    font-size: 2rem;
-    cursor: pointer;
-    padding: 0px;
+h1 {
     margin: 0;
-    outline: none;
-    white-space: nowrap;
-    text-align: center;
+    padding: 0;
+}
+
+h1#topHeading {
+    font-size: 48px;
+    font-weight: 200;
+    color: #623F3F;
+    margin: 20px 0px 0px 0px; 
+}
+
+h1#timerDisplay {
+    font-size: 48px;
+    font-weight: 200;
+    color: #7a070748;
+    margin: 20px 0px 25px 0px; 
+}
+
+#timerInput {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 48px;
+    color: #7a070748;
+    background-color:#FEF0DC;
+    border: none;
+    text-align: right;
+    padding-right: 8px;
+    width: 153px;
+    font-variant-numeric: tabular-nums; /* Makes every number equal widths*/
+    letter-spacing: 2px;
+}
+
+
+button#pauseResumeButton {
+    color: #623F3F;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 32px;
+    background-color: #FEF0DC;
+    height: 65px;
+    width: 130px;
+    border-width: 2px;
+    border-color: #623F3F;
+}
+
+button#resetButton {
+    color: #623F3F;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 200;
+    font-size: 18px;
+    background-color: #FEF0DC;
+    height: 40px;
+    width: 70px;
+    border-width: 2px;
+    border-color: #623F3F;
+}
+
+
+#timerContainer {
+    display: inline-block; /* Ensure the container only takes the necessary width */
+}
+
+#minutesSpan,
+#secondsSpan {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 36px; /* Adjust the font size for minutes and seconds */
+    font-weight: 200;
+    color: #7a070748;
 }
