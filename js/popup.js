@@ -6,28 +6,44 @@ document.addEventListener("DOMContentLoaded", function () {
     function checkStatus() {
         switch (programStatus) {
             case "NOT_STARTED":
-                durationButtons.forEach((button) => (button.disabled = false));
+                durationButtons.forEach((button) => {
+                    button.disabled = false;
+                    button.style.display = "none"; // switch to inline-block later.. currently hiding for UI development
+                });
                 document.getElementById("pauseResumeButton").disabled = false;
-                document.getElementById("pauseResumeButton").innerText = "Start Timer";
+                document.getElementById("pauseResumeButton").innerText = "start";
 
-                
                 document.getElementById("resetButton").disabled = true;
+                document.getElementById("resetButton").style.display = "none";
+
+
                 break;
 
             case "PLAYING":
                 document.getElementById("pauseResumeButton").disabled = false;
-                document.getElementById("pauseResumeButton").innerText = "Pause";
+                document.getElementById("pauseResumeButton").innerText = "pause";
                 document.getElementById("resetButton").disabled = false;
+                document.getElementById("resetButton").style.display = "block";
+
                 
-                durationButtons.forEach((button) => (button.disabled = true));
+                durationButtons.forEach((button) => {
+                    button.disabled = true;
+                    button.style.display = "none";
+                });
                 break;
 
             case "PAUSED":
                 document.getElementById("pauseResumeButton").disabled = false;
-                document.getElementById("pauseResumeButton").innerText = "Resume";
+                document.getElementById("pauseResumeButton").innerText = "resume";
                 document.getElementById("resetButton").disabled = false;
+                document.getElementById("resetButton").style.display = "block";
 
-                durationButtons.forEach((button) => (button.disabled = true));
+                
+
+                durationButtons.forEach((button) => {
+                    button.disabled = true;
+                    button.style.display = "none";
+                });
                 break;
 
             default:
@@ -91,6 +107,23 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             checkStatus();
         });
+
+
+    document.getElementById("timerInput").addEventListener("input", function () {
+        // Remove non-numeric characters and limit the input length to 4 characters
+        timerInput.value = timerInput.value.replace(/\D/g, '');
+
+        // Pad the input value with zeros from the right side until length is 4
+        timerInput.value = timerInput.value.padStart(4, '0');
+
+        // Keep only the last 4 digits
+        timerInput.value = timerInput.value.slice(-4);
+
+        // Insert colon
+        if (timerInput.value.length >= 3) {
+            timerInput.value = timerInput.value.slice(0, -2) + ':' + timerInput.value.slice(-2);
+        }
+      });
 
     document
         .getElementById("resetButton")
