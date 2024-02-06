@@ -1,8 +1,6 @@
 let countdown;
 let countdownInterval;
 let countdownStart;
-let paused = false;
-let remainingTime;
 let programStatus = "NOT_STARTED";
 
 function closeAllTabsAndOpenNewTab() {
@@ -16,12 +14,13 @@ function closeAllTabsAndOpenNewTab() {
 
 function startCountdown(seconds) {
     countdown = seconds;
-    countdownStart = performance.now();
+    countdownStart = Date.now();
     programStatus = "PLAYING";
 
     countdownInterval = setInterval(function () {
-        if (programStatus !== "PAUSED") { 
-            const elapsedMilliseconds = performance.now() - countdownStart;
+        if (programStatus !== "PAUSED") {
+            const now = Date.now();
+            const elapsedMilliseconds = now - countdownStart;
             const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
             countdown = seconds - elapsedSeconds;
 
@@ -30,22 +29,20 @@ function startCountdown(seconds) {
                 clearCountdown();
             }
         }
-    }, 200);
+    }, 1000);
 }
 
 function pauseCountdown() {
     clearInterval(countdownInterval);
-    remainingTime = countdown;
     programStatus = "PAUSED";
 }
 
 function resumeCountdown() {
-    clearInterval(countdownInterval); 
-    if (remainingTime > 0) {
-        countdownStart = performance.now();
-        startCountdown(remainingTime);
+    clearInterval(countdownInterval); // ensure no lingering interval function for countdown
+    if (countdown > 0) {
+        startCountdown(countdown);
     } else {
-        // Handle case when the remaining time is already expired
+        // Handle emergency case when the remaining time is already expired
         closeAllTabsAndOpenNewTab();
         clearCountdown();
     }
@@ -55,7 +52,6 @@ function resumeCountdown() {
 function clearCountdown() {
     clearInterval(countdownInterval);
     countdown = undefined;
-    remainingTime = undefined;
     countdownStart = undefined;
     programStatus = "NOT_STARTED";
 }
