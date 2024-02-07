@@ -1,15 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     let defaultTime = 0;
     let programStatus;
-    const durationButtons = document.querySelectorAll(".duration-button");
-
     function checkStatus() {
         switch (programStatus) {
             case "NOT_STARTED":
-                durationButtons.forEach((button) => {
-                    button.disabled = false;
-                    button.style.display = "none"; // switch to inline-block later.. currently hiding for UI development
-                });
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "start";
                 document.getElementById("timerInput").style.display = "block";
@@ -28,11 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
 
-                
-                durationButtons.forEach((button) => {
-                    button.disabled = true;
-                    button.style.display = "none";
-                });
                 break;
 
             case "PAUSED":
@@ -43,12 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
 
-                
-
-                durationButtons.forEach((button) => {
-                    button.disabled = true;
-                    button.style.display = "none";
-                });
                 break;
 
             default:
@@ -93,15 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
     }
 
-    function handleButtonClick(button) {
-        defaultTime = parseInt(button.dataset.duration, 10);
-        insertTime(defaultTime);
-    }
-
-    durationButtons.forEach((button) => {
-        button.onclick = () => handleButtonClick(button);
-    });
-
     document
         .getElementById("pauseResumeButton")
         .addEventListener("click", function () {
@@ -139,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if(timerInput.value==="00:00") {
             timerInput.value = "";
         }
-
+        
         const minutes = parseInt(timerInput.value.slice(0, 2));
         const seconds = parseInt(timerInput.value.slice(3));
 
