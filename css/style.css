@@ -2,7 +2,7 @@
 body {
     margin: 0;
     padding: 0;
-    width: 250px;
+    width: 225px;
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
@@ -14,6 +14,10 @@ body {
 /* * {
     box-sizing: border-box;
 } */
+
+#content {
+    padding: 15px;
+}
 
 h1 {
     margin: 0;
@@ -27,28 +31,33 @@ h1#topHeading {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0px 0px 0px; 
+    /* margin: 10px 0px 0px 0px;  */
 }
 
 #timer-block {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 10px 0px 15px 0px;
 }
 
 #timerInput {
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
-    font-size: 48px;
+    font-size: 38px;
     
     color: #7a070748;
     background-color:#FEF0DC;
     
+    outline: none;
+    /* outline-color: #7a070748;
+    outline-width: 1px; */
+    /* outline-style:dashed; */
     border: none;
     text-align: right;
     padding-right: 7px;
-    width: 153px;
+    width: 128px;
 
     font-variant-numeric: tabular-nums; 
     letter-spacing: 2px; 
@@ -57,9 +66,9 @@ h1#topHeading {
 h1#timerDisplay {
     font-family: 'Inter', sans-serif;
     font-style: italic;
-    font-size: 48px;
+    font-size: 38px;
     font-weight: 200;
-    color: #7a070748;
+    color: #623F3F;
     padding-top:1px;
     padding-bottom: 1px;
     font-variant-numeric: tabular-nums;
@@ -73,8 +82,27 @@ h1#timerDisplay {
 }
 
 #timerInput::placeholder {
-    font-size: 48px;
+    font-size: 38px;
+    color: #7a070748;
+    background-color: #FEF0DC;
+    
+    /* color: #7a070748; */
 }
+
+#timerInput:hover, #timerInput:focus{
+    /* text-decoration-color: #7a070748;
+    text-decoration: underline;
+    text-decoration-thickness: 2px; */
+    /* color: #7a070748; */
+    outline-color: #7a070748;
+    outline-width: 1px;
+    outline-style:dashed;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    /* font-weight: 400; */
+    font-size: 38px;
+}
+
 
 
 button#pauseResumeButton {
@@ -82,10 +110,10 @@ button#pauseResumeButton {
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
-    font-size: 32px;
+    font-size: 22px;
     background-color: #FEF0DC;
-    height: 65px;
-    border-width: 2px;
+    /* height: 50px; */
+    border-width: 1px;
     border-color: #623F3F;
 }
 
@@ -94,9 +122,9 @@ button#resetButton {
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
-    font-size: 32px;
+    font-size: 22px;
     background-color: #FEF0DC;
-    height: 65px;
-    border-width: 2px;
+    /* height: 50px; */
+    border-width: 1px;
     border-color: #623F3F;
 }
