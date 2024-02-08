@@ -1,6 +1,22 @@
 
 body {
-    height: 280px;
+    margin: 0;
+    padding: 0;
+    
+
+    /* padding: 1rem;
+    padding-bottom: 0; */
+    width: 250px;
+
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 200;
+
+    font-size:16px;
+
+    display: block;
+    background-color: #FEF0DC;
+    /* height: 280px;
     width: 420px;
     margin: 0;
     padding: 0;
@@ -9,11 +25,16 @@ body {
     font-weight: 200;
     display: flex;
     flex-direction: column;
-    /* justify-content: center;  */
     align-items: center; 
-    background-color: #FEF0DC;
+    background-color: #FEF0DC; */
 
 }
+
+* {
+    box-sizing: border-box;
+}
+
+
 
 h1 {
     margin: 0;
@@ -21,23 +42,24 @@ h1 {
 }
 
 h1#topHeading {
-    font-size: 48px;
+    font-size: 32px;
     font-weight: 200;
     color: #623F3F;
-    margin: 20px 0px 0px 0px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 0px 0px; 
+    /* margin-bottom: 1rem; */
+    /* line-height: 1.2em; */
 }
 
-h1#timerDisplay {
-    font-size: 48px;
-    font-weight: 200;
-    color: #7a070748;
-    margin: 20px 0px 26px 0px; 
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 2px;
+#timer-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* This is causing a big gap below body*/
- #timerInput {
+#timerInput {
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
@@ -51,15 +73,26 @@ h1#timerDisplay {
     padding-right: 8px;
     width: 153px;
     
-    margin: 19px 0px 25px 3px; 
+    /* margin: 19px 0px 25px 3px;  */
     font-variant-numeric: tabular-nums; 
     letter-spacing: 2px; 
     line-height: 1;
 }
 
+h1#timerDisplay {
+    font-size: 48px;
+    font-weight: 200;
+    color: #7a070748;
+    /* margin: 20px 0px 26px 0px;  */
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+}
+
+
+
 #timerInput::placeholder {
     font-size: 48px;
-    color: #5a575725;
+    /* color: #5a575725; */
 }
 
 
@@ -75,7 +108,7 @@ button#pauseResumeButton {
     border-width: 2px;
     border-color: #623F3F;
 }
-
+/*
 button#resetButton {
     color: #623F3F;
     font-family: 'Inter', sans-serif;
