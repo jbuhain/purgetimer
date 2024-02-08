@@ -2,39 +2,18 @@
 body {
     margin: 0;
     padding: 0;
-    
-
-    /* padding: 1rem;
-    padding-bottom: 0; */
     width: 250px;
-
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
-
     font-size:16px;
-
     display: block;
     background-color: #FEF0DC;
-    /* height: 280px;
-    width: 420px;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-weight: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    background-color: #FEF0DC; */
-
 }
 
-* {
+/* * {
     box-sizing: border-box;
-}
-
-
+} */
 
 h1 {
     margin: 0;
@@ -49,8 +28,6 @@ h1#topHeading {
     align-items: center;
     justify-content: center;
     margin: 10px 0px 0px 0px; 
-    /* margin-bottom: 1rem; */
-    /* line-height: 1.2em; */
 }
 
 #timer-block {
@@ -70,29 +47,33 @@ h1#topHeading {
     
     border: none;
     text-align: right;
-    padding-right: 8px;
+    padding-right: 7px;
     width: 153px;
-    
-    /* margin: 19px 0px 25px 3px;  */
+
     font-variant-numeric: tabular-nums; 
     letter-spacing: 2px; 
-    line-height: 1;
 }
 
 h1#timerDisplay {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
     font-size: 48px;
     font-weight: 200;
     color: #7a070748;
-    /* margin: 20px 0px 26px 0px;  */
+    padding-top:1px;
+    padding-bottom: 1px;
     font-variant-numeric: tabular-nums;
     letter-spacing: 2px;
 }
 
-
+#button-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
 
 #timerInput::placeholder {
     font-size: 48px;
-    /* color: #5a575725; */
 }
 
 
@@ -104,26 +85,18 @@ button#pauseResumeButton {
     font-size: 32px;
     background-color: #FEF0DC;
     height: 65px;
-    width: 130px;
     border-width: 2px;
     border-color: #623F3F;
 }
-/*
+
 button#resetButton {
     color: #623F3F;
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-weight: 200;
-    font-size: 18px;
+    font-size: 32px;
     background-color: #FEF0DC;
-    height: 40px;
-    width: 70px;
+    height: 65px;
     border-width: 2px;
     border-color: #623F3F;
 }
-
-
-#timerContainer {
-    display: inline-block; 
-} */
-
