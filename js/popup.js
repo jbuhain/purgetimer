@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function checkStatus() {
         switch (programStatus) {
             case "NOT_STARTED":
+                document.getElementById("topHeading").innerText = "purge timer";
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "start";
                 document.getElementById("timerInput").style.display = "block";
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 break;
 
             case "PLAYING":
+                document.getElementById("topHeading").innerText = "purge happens in";
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "pause";
                 document.getElementById("resetButton").disabled = false;
@@ -25,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 break;
 
             case "PAUSED":
+                document.getElementById("topHeading").innerText = "timer paused";
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "resume";
                 document.getElementById("resetButton").disabled = false;
@@ -47,9 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
         sendMessage("getCountdown", null, function (response) {
             if (response) {
                 if(response.countdown !== undefined) insertTime(response.countdown);
-
-                programStatus = response.programStatus;
-                checkStatus();
+                
+                if(programStatus !== response.programStatus){
+                    programStatus = response.programStatus;
+                    checkStatus();
+                }
             }
         });
     }
@@ -91,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sendMessage("pauseCountdown");
             }
-            checkStatus();
         });
 
 

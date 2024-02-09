@@ -1,22 +1,15 @@
-
 body {
     margin: 0;
     padding: 0;
-    width: 225px;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-weight: 200;
-    font-size:16px;
+    width: 420px;
     display: block;
-    background-color: #FEF0DC;
+    background-color: #fef0dc;
 }
 
-/* * {
-    box-sizing: border-box;
-} */
-
 #content {
-    padding: 15px;
+    padding: 0px 15px 15px 15px;
+    outline: 4px solid #623f3f;
+    outline-offset: -5px;
 }
 
 h1 {
@@ -25,106 +18,118 @@ h1 {
 }
 
 h1#topHeading {
-    font-size: 32px;
-    font-weight: 200;
-    color: #623F3F;
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+    font-size: 48px;
+    font-weight: 600;
+    color: #623f3f;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* margin: 10px 0px 0px 0px;  */
+    user-select: none;
 }
 
 #timer-block {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0px 15px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 #timerInput {
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-weight: 200;
-    font-size: 38px;
-    
-    color: #7a070748;
-    background-color:#FEF0DC;
-    
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    color: #7a070759;
+
+    background-color: #fef0dc;
+
     outline: none;
-    /* outline-color: #7a070748;
-    outline-width: 1px; */
-    /* outline-style:dashed; */
     border: none;
     text-align: right;
-    padding-right: 7px;
-    width: 128px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 161px;
 
-    font-variant-numeric: tabular-nums; 
-    letter-spacing: 2px; 
-}
-
-h1#timerDisplay {
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-size: 38px;
-    font-weight: 200;
-    color: #623F3F;
-    padding-top:1px;
-    padding-bottom: 1px;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+
+    line-height: 60px;
+    height: 70px;
 }
 
-#button-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+#timerInput:focus {
+    outline-color: #7a070759;
+    outline-width: 1px;
+    outline-style: dashed;
+    outline-offset: -1px;
 }
 
 #timerInput::placeholder {
-    font-size: 38px;
-    color: #7a070748;
-    background-color: #FEF0DC;
-    
-    /* color: #7a070748; */
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    color: #7a070759;
 }
 
-#timerInput:hover, #timerInput:focus{
-    /* text-decoration-color: #7a070748;
-    text-decoration: underline;
-    text-decoration-thickness: 2px; */
-    /* color: #7a070748; */
-    outline-color: #7a070748;
-    outline-width: 1px;
-    outline-style:dashed;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    /* font-weight: 400; */
-    font-size: 38px;
+h1#timerDisplay {
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    color: #623f3f;
+    padding-left: 4px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 3px;
+    user-select: none;
 }
 
-
+#button-block {
+    /* Using grid to center pause/resume btn and right corner reset btn */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+}
 
 button#pauseResumeButton {
-    color: #623F3F;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-weight: 200;
-    font-size: 22px;
-    background-color: #FEF0DC;
-    /* height: 50px; */
+    color: #fef0dc;
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    background-color: #2f120eb0;
+
+    border-style: groove;
     border-width: 1px;
-    border-color: #623F3F;
+    border-color: #000000;
+
+    height: 66px;
+    width: 123px;
+
+    grid-column: 2;
+}
+
+button#pauseResumeButton:hover {
+    background-color: #2f120e9a;
 }
 
 button#resetButton {
-    color: #623F3F;
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
+    color: #7a0707;
+    font-family: "Inter", sans-serif;
+    font-style: normal;
     font-weight: 200;
-    font-size: 22px;
-    background-color: #FEF0DC;
-    /* height: 50px; */
-    border-width: 1px;
-    border-color: #623F3F;
+    font-size: 20px;
+    background-color: #fef0dc;
+
+    margin-top: 40px;
+    border: none;
+
+    justify-self: end;
+}
+
+button#resetButton:hover {
+    background-color: #7a310723;
 }
