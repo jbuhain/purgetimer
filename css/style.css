@@ -1,29 +1,168 @@
-body {
-    height: 100vh;
-    width: 200vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
+:root {
+    --beige: #fef0dc;
+    --hoverbeige: #7a310723;
+    --darkbrown: #623f3f;
+    --lightbrown: #7a070759;
+    --regbrown: #2f120eb0;
+    --hoverbrown: #2f120e9a;
 }
 
-div#timers-block {
-    display:flex;
-    flex-direction: row;
+.hidden {
+    display: none;
 }
 
-.duration-button {
-
+.visible {
+    display: block;
 }
 
-#timer {
-    font-size: 2rem;
+button:hover {
     cursor: pointer;
-    padding: 0px;
-    margin: 0;
-    outline: none;
-    white-space: nowrap;
-    text-align: center;
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 350px;
+    display: block;
+    background-color: var(--beige);
+}
+
+body, h1, #timerInput, h1#timerDisplay, button#pauseResumeButton {
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+}
+
+#content {
+    padding: 5px 15px 0px 15px;
+    outline: 2px solid var(--darkbrown);
+    outline-offset: -2px;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+h2#bottomText {
+    padding:0;
+    margin:0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: "Inter", serif;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    font-size: 13px;
+    color: var(--darkbrown);
+    /* background-color: red; */
+}
+
+h1#topHeading {
+    color: var(--darkbrown);
+    font-size: 48px;
+    font-weight: 600;
+
+    height: 60px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#timer-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#timerInput {
+    color: var(--lightbrown);
+    font-weight: 600;
+    font-size: 48px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 3px;
+
+    background-color: var(--beige);
+    outline: none;
+    border: none;
+    
+    text-align: right;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    width: 161px;
+    height: 70px;
+}
+
+#timerInput:focus {
+    outline-color: var(--lightbrown);
+    outline-width: 1px;
+    outline-style: dashed;
+    outline-offset: -1px;
+}
+
+#timerInput::placeholder {
+    color: var(--lightbrown);
+    font-weight: 400;
+    font-size: 48px;
+}
+
+h1#timerDisplay {
+    color: var(--darkbrown);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 48px;
+    letter-spacing: 3px;
+    user-select: none;
+
+    padding-left: 4px;
+}
+
+#button-block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+
+}
+
+button#pauseResumeButton {
+    color: var(--beige);
+    font-weight: 400;
+    font-size: 32px;
+    background-color: var(--hoverbrown);
+
+    border:none;
+    border-radius: 4px;
+    
+    height: 66px;
+    width: 123px;
+    
+    grid-column: 2;
+}
+
+.notPressed {
+    box-shadow: var(--regbrown) 0px 6px 0px;
+}
+
+.pressed {
+    transform: translateY(6px);
+}
+
+button#resetButton {
+    color: var(--lightbrown);
+    background-color: var(--beige);
+    font-weight: 200;
+    font-size: 20px;
+    
+    border: none;
+    justify-self: end;
+    margin-top: 40px;
+}
+
+button#resetButton:hover {
+    background-color: var(--hoverbeige);
+}
+
+
