@@ -1,15 +1,29 @@
+:root {
+    --beige: #fef0dc;
+    --hoverbeige: #7a310723;
+    --darkbrown: #623f3f;
+    --lightbrown: #7a070759;
+    --regbrown: #2f120eb0;
+    --hoverbrown: #2f120e9a;
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 420px;
     display: block;
-    background-color: #fef0dc;
+    background-color: var(--beige);
+}
+
+body, h1, #timerInput, h1#timerDisplay, button#pauseResumeButton {
+    font-family: "Jomolhari", serif;
+    font-style: normal;
 }
 
 #content {
     padding: 0px 15px 15px 15px;
-    outline: 4px solid #623f3f;
-    outline-offset: -5px;
+    outline: 2px solid var(--darkbrown);
+    outline-offset: -2px;
 }
 
 h1 {
@@ -18,11 +32,10 @@ h1 {
 }
 
 h1#topHeading {
-    font-family: "Jomolhari", serif;
-    font-style: normal;
+    color: var(--darkbrown);
     font-size: 48px;
     font-weight: 600;
-    color: #623f3f;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,78 +46,67 @@ h1#topHeading {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0px 0px 0px 0px;
 }
 
 #timerInput {
-    font-family: "Jomolhari", serif;
-    font-style: normal;
+    color: var(--lightbrown);
     font-weight: 600;
     font-size: 48px;
-    color: #7a070759;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 3px;
 
-    background-color: #fef0dc;
-
+    background-color: var(--beige);
     outline: none;
     border: none;
+    
     text-align: right;
     padding-right: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+
     width: 161px;
-
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 3px;
-
-    line-height: 60px;
     height: 70px;
 }
 
 #timerInput:focus {
-    outline-color: #7a070759;
+    outline-color: var(--lightbrown);
     outline-width: 1px;
     outline-style: dashed;
     outline-offset: -1px;
 }
 
 #timerInput::placeholder {
-    font-family: "Jomolhari", serif;
-    font-style: normal;
+    color: var(--lightbrown);
     font-weight: 400;
     font-size: 48px;
-    color: #7a070759;
 }
 
 h1#timerDisplay {
-    font-family: "Jomolhari", serif;
-    font-style: normal;
+    color: var(--darkbrown);
+    font-variant-numeric: tabular-nums;
     font-weight: 600;
     font-size: 48px;
-    color: #623f3f;
-    padding-left: 4px;
-    font-variant-numeric: tabular-nums;
     letter-spacing: 3px;
     user-select: none;
+
+    padding-left: 4px;
 }
 
 #button-block {
-    /* Using grid to center pause/resume btn and right corner reset btn */
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
 }
 
 button#pauseResumeButton {
-    color: #fef0dc;
-    font-family: "Jomolhari", serif;
-    font-style: normal;
+    color: var(--beige);
     font-weight: 400;
     font-size: 32px;
-    background-color: #2f120eb0;
+    background-color: var(--regbrown);
 
     border-style: groove;
     border-width: 1px;
-    border-color: #000000;
+    border-color: var(--darkbrown);
 
     height: 66px;
     width: 123px;
@@ -113,23 +115,20 @@ button#pauseResumeButton {
 }
 
 button#pauseResumeButton:hover {
-    background-color: #2f120e9a;
+    background-color: var(--hoverbrown);
 }
 
 button#resetButton {
-    color: #7a0707;
-    font-family: "Inter", sans-serif;
-    font-style: normal;
+    color: var(--lightbrown);
+    background-color: var(--beige);
     font-weight: 200;
     font-size: 20px;
-    background-color: #fef0dc;
-
-    margin-top: 40px;
+    
     border: none;
-
     justify-self: end;
+    margin-top: 40px;
 }
 
 button#resetButton:hover {
-    background-color: #7a310723;
+    background-color: var(--hoverbeige);
 }
