@@ -9,20 +9,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "start";
                 document.getElementById("timerInput").style.display = "block";
                 document.getElementById("timerDisplay").style.display = "none";
-
+                
                 document.getElementById("resetButton").disabled = true;
                 document.getElementById("resetButton").style.display = "none";
 
+                
+                document.getElementById("pauseResumeButton").classList.add("notPressed");
+                document.getElementById("pauseResumeButton").classList.remove("pressed");
                 break;
 
             case "PLAYING":
-                document.getElementById("topHeading").innerText = "purge happens in";
+                document.getElementById("topHeading").innerText = "purging in";
                 document.getElementById("pauseResumeButton").disabled = false;
                 document.getElementById("pauseResumeButton").innerText = "pause";
                 document.getElementById("resetButton").disabled = false;
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
+
+                document.getElementById("pauseResumeButton").classList.remove("notPressed");
+                document.getElementById("pauseResumeButton").classList.add("pressed");
 
                 break;
 
@@ -34,6 +40,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
+
+                document.getElementById("pauseResumeButton").classList.add("notPressed");
+                document.getElementById("pauseResumeButton").classList.remove("pressed");
 
                 break;
 
