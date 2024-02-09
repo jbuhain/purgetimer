@@ -3,12 +3,11 @@ let countdownInterval;
 let countdownStart;
 let programStatus = "NOT_STARTED";
 
-
-// Using this alarm to prevent chrome from stopping this program. 
-// Important! 
-chrome.alarms.create({ periodInMinutes: .25 })
+// Using this alarm to prevent chrome from stopping this program.
+// Important!
+chrome.alarms.create({ periodInMinutes: 0.25 });
 chrome.alarms.onAlarm.addListener(() => {
-  console.log('Waking up program to keep timer running');
+    console.log("Waking up program to keep timer running");
 });
 
 function closeAllTabsAndOpenNewTab() {
@@ -31,7 +30,6 @@ function startCountdown(seconds) {
             const elapsedMilliseconds = now - countdownStart;
             const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
             countdown = seconds - elapsedSeconds;
-            console.log("Time: " + countdown);
             if (countdown <= 0) {
                 closeAllTabsAndOpenNewTab();
                 clearCountdown();
@@ -68,13 +66,15 @@ function getCountdown() {
     return countdown;
 }
 
-
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "startCountdown") {
         startCountdown(request.data.seconds);
     } else if (request.action === "getCountdown") {
-        sendResponse({ countdown: getCountdown(), programStatus: programStatus });
+        sendResponse({
+            countdown: getCountdown(),
+            programStatus: programStatus,
+        });
     } else if (request.action === "clearCountdown") {
         clearCountdown();
     } else if (request.action === "pauseCountdown") {
