@@ -118,6 +118,11 @@ h1#timerDisplay {
     user-select: none;
 
     padding-left: 4px;
+    
+    /* Mac treats the font weird, soln is to 
+    fix the height and line height */
+    height: 90px;
+    line-height: 90px;
 }
 
 #button-block {
