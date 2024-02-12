@@ -137,7 +137,7 @@ button#pauseResumeButton {
     font-weight: 400;
     font-size: 32px;
     background-color: var(--hoverbrown);
-
+    outline: var(--hoverbrown);
     border:none;
     border-radius: 4px;
     
@@ -161,6 +161,7 @@ button#resetButton {
     font-weight: 200;
     font-size: 20px;
     
+    outline: var(--hoverbrown);
     border: none;
     justify-self: end;
     margin-top: 40px;
