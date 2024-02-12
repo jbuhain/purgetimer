@@ -25,7 +25,7 @@ async function runTests() {
 
 async function launchBrowserWithExtension() {
     // point to the source directory, which is one level above the test directory,
-    const extensionPath = path.resolve(__dirname, "..", "src");
+    const extensionPath = path.resolve(__dirname, "..", "purgetimer-extension");
 
     return await puppeteer.launch({
         headless: false,
