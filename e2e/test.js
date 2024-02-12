@@ -1,4 +1,4 @@
-//  chrome-extension://pjmgmbnjicnimjkeoknegopkcofcpjhn/popup.html
+//  chrome-extension://lkinbooaammpplinggfjikljjpdobaic/popup.html
 
 const puppeteer = require("puppeteer");
 const path = require("path");
@@ -25,7 +25,7 @@ async function runTests() {
 
 async function launchBrowserWithExtension() {
     // point to the source directory, which is one level above the test directory,
-    const extensionPath = path.resolve(__dirname, "..", "purgetimer-extension");
+    const extensionPath = path.resolve(__dirname, "..", "purgetimer-chrome-extension");
 
     return await puppeteer.launch({
         headless: false,
@@ -41,7 +41,7 @@ async function testExtensionFunctionality(browser) {
 
     // verify title
     await page.goto(
-        "chrome-extension://pjmgmbnjicnimjkeoknegopkcofcpjhn/popup.html"
+        "chrome-extension://lkinbooaammpplinggfjikljjpdobaic/popup.html"
     );
     const pagetitle = await page.title();
     console.log("Page Title:", pagetitle);
