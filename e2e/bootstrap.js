@@ -15,7 +15,7 @@ async function bootstrap(options = {}) {
 
     try {
         const browser = await puppeteer.launch({
-            headless : "new",
+            headless,
             devtools,
             args: [
                 `--disable-extensions-except=${extensionPath}`,

@@ -22,7 +22,7 @@ describe('user sets a valid input', () => {
 
         // Get the value of the input field
         const inputValue = await popupPage.$eval('#timerInput', input => input.value);
-        console.log(inputValue);
+        // console.log(inputValue);
 
         // Assert that the input value is '09:99' (program formats it)
         expect(inputValue).toBe('59:59');
@@ -60,11 +60,48 @@ describe('user sets a valid input', () => {
         expect(displayProperty_resetButton).toBe('block');
     });
 
-    afterAll(async () => {
-        // await new Promise(resolve => setTimeout(resolve, 10000));
-            
-            await browser.close();
+    afterAll(async () => {            
+        await browser.close();
+    });
+});
 
+describe('user sets invalid input', () => {
+    let browser, popupPage, ISHEADLESS;
+
+    beforeAll(async () => {
+        ISHEADLESS = true;
+        const context = await bootstrap({ devtools: false, headless: ISHEADLESS });
+
+        browser = context.browser;
+        popupPage = context.popupPage;
+    });
+
+    test('user clicks start button w/o setting time', async () => {
+        let errorMessage;
+        // Handle any alert dialog that appears
+        // NOTE: make sure to call this before any potential alert-causing actions happen
+        popupPage.on('dialog', async dialog => {
+            errorMessage = dialog.message();
+            await dialog.dismiss(); // Dismiss the alert
+        });
+        await popupPage.click('#pauseResumeButton');
+        expect(errorMessage).toBe('Invalid input. Set the timer > 0 seconds.');
+    });
+
+    test('user clicks start button w/ invalid time', async () => {
+        let errorMessage;
+        // Handle any alert dialog that appears
+        // NOTE: make sure to call this before any potential alert-causing actions happen
+        popupPage.on('dialog', async dialog => {
+            errorMessage = dialog.message();
+            await dialog.dismiss(); // Dismiss the alert
+        });
+        await popupPage.click('#pauseResumeButton');
+        expect(errorMessage).toBe('Invalid input. Set the timer > 0 seconds.');
+    });
+
+    afterAll(async () => {            
+        await browser.close();
     });
 });
 
