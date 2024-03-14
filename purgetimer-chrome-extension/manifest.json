@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Purge Timer",
-    "description": "Automatically closes tabs when the timer ends.",
+    "description": "Automatically closes all tabs when the timer ends.",
     "author": "jbuhain",
     "version": "1.0",
     "action": {
