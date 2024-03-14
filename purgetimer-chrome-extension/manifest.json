@@ -20,5 +20,5 @@
         "48": "assets/icon48px.png",
         "128": "assets/icon128px.png"
     },
-    "permissions": ["alarms"]
+    "permissions": ["alarms","tabs"]
 }

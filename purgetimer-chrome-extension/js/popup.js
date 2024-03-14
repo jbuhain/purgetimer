@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+    
 
     document.getElementById("timerInput").addEventListener("input", function () {
         // Remove non-numeric characters and limit the input length to 4 characters
@@ -138,6 +139,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
       });
 
+      document
+      .getElementById("dashboardButton")
+      .addEventListener("click", function () {
+          chrome.tabs.query({}, function(allTabs) {
+              // Filter tabs to find if dashboard.html is already open
+              const dashboardTabs = allTabs.filter(tab => tab.url.includes('dashboard.html'));
+              
+              if (dashboardTabs.length > 0) {
+                // If the page is already open, focus on the first tab that matches
+                chrome.tabs.update(dashboardTabs[0].id, { active: true });
+                // Focus on the window containing the dashboard.html tab
+                chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
+                console.log("found")
+              } else {
+                  // If the page is not open, open a new tab
+                  chrome.tabs.create({ url: 'dashboard.html' });
+              }
+          });
+      });
+    
     document
         .getElementById("resetButton")
         .addEventListener("click", function () {
@@ -146,6 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
             checkStatus();
         });
 
-    updateCountdownDisplay();
+    // updateCountdownDisplay();
     setInterval(updateCountdownDisplay, 100);
 });
