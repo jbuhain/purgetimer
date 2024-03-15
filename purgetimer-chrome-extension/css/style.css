@@ -1,24 +1,3 @@
-:root {
-    --beige: #fef0dc;
-    --hoverbeige: #7a310723;
-    --darkbrown: #623f3f;
-    --lightbrown: #7a070759;
-    --regbrown: #2f120eb0;
-    --hoverbrown: #2f120e9a;
-}
-
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: block;
-}
-
-button:hover {
-    cursor: pointer;
-}
-
 body {
     margin: 0;
     padding: 0;
