@@ -20,5 +20,11 @@
         "48": "assets/icon48px.png",
         "128": "assets/icon128px.png"
     },
+    "web_accessible_resources": [
+        {
+        "resources": ["codemirror.css", "codemirror.js", "dashboard.html"],
+        "matches": ["<all_urls>"]
+        }
+    ],
     "permissions": ["alarms","tabs"]
 }
