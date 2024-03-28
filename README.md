@@ -6,7 +6,7 @@ Why make this addon?
 I noticed that there isn't an addon that does this specific (quirky?) functionality and thought it would be fun to develop. 
 
 Where is this addon available?
-It can be downloaded for free on [chrome webstore](https://chromewebstore.google.com/detail/purge-timer/cipnifncnhpnophkinojcfeiljphmjfc
+It can be downloaded for free on the [chrome webstore](https://chromewebstore.google.com/detail/purge-timer/cipnifncnhpnophkinojcfeiljphmjfc).
 This addon is in its very earliest version and will be updated more in the future.
 
 How to test the extension in Chrome: 
@@ -15,4 +15,4 @@ How to test the extension in Chrome:
 3) The addon should now be added to your extensions.
 
 Major Updates: 
-February 19, 2024 - Version 1.0.0 released on [chrome webstore](https://chromewebstore.google.com/detail/purge-timer/cipnifncnhpnophkinojcfeiljphmjfc
+February 19, 2024 - Version 1.0.0 released on [chrome webstore](https://chromewebstore.google.com/detail/purge-timer/cipnifncnhpnophkinojcfeiljphmjfc).
