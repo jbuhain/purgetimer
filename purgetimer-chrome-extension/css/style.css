@@ -82,8 +82,8 @@ h1#topHeading {
 
 #timerInput:focus {
     outline-color: var(--lightbrown);
-    outline-width: 1px;
-    outline-style: dashed;
+    outline-width: 5px;
+    outline-style: solid;
     outline-offset: -1px;
     cursor: text;
 }
