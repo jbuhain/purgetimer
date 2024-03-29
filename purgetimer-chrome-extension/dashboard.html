@@ -13,9 +13,37 @@
 
 <body>
     <div id="content">
+        <h1>Preferences</h1>
+        <div>
+            <label>
+                <input type="checkbox">"Full Send" - Once timer is started, it CANNOT be canceled.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Display Timer at all times" - Displays timer on focused tab.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Launch default tabs" - Opens default tabs after purging.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Analog style clock" - Sleeker timer.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Simple Mode" - Pre-defined time buttons.
+            </label>
+        </div>
+
+        <h1>List of Links to open. One link per line.</h1>
+        <button id="saveLinksButton">Apply Changes</button>
         <textarea id="codeMirrorTextarea"></textarea>
-        <button id="saveLinksButton">Save Links</button>
-        <button id="openLinksButton">Open Links</button>
+        
         <div id="saveLinksMessage"></div>
 
     </div>

@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 document.getElementById("resetButton").disabled = true;
                 document.getElementById("resetButton").style.display = "none";
+                document.getElementById("dashboardButton").style.display = "block";
 
                 
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
+                document.getElementById("dashboardButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.remove("notPressed");
                 document.getElementById("pauseResumeButton").classList.add("pressed");
@@ -40,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
+                document.getElementById("dashboardButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
                 document.getElementById("pauseResumeButton").classList.remove("pressed");
@@ -143,17 +146,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .getElementById("dashboardButton")
       .addEventListener("click", function () {
           chrome.tabs.query({}, function(allTabs) {
-              // Filter tabs to find if dashboard.html is already open
-              const dashboardTabs = allTabs.filter(tab => tab.url.includes('dashboard.html'));
+              const dashboardTabs = allTabs.filter(tab => tab.title === "purgetimer//settings");
               
               if (dashboardTabs.length > 0) {
-                // If the page is already open, focus on the first tab that matches
                 chrome.tabs.update(dashboardTabs[0].id, { active: true });
-                // Focus on the window containing the dashboard.html tab
                 chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
                 console.log("found")
               } else {
-                  // If the page is not open, open a new tab
                   chrome.tabs.create({ url: 'dashboard.html' });
               }
           });
