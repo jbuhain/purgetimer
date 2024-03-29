@@ -33,6 +33,7 @@ h2#bottomText {
     text-align: center;
     font-size: 13px;
     color: var(--darkbrown);
+    user-select: none;
     /* background-color: red; */
 }
 
@@ -75,11 +76,16 @@ h1#topHeading {
     height: 70px;
 }
 
+#timerInput:hover {
+    cursor: pointer;
+}
+
 #timerInput:focus {
     outline-color: var(--lightbrown);
     outline-width: 1px;
     outline-style: dashed;
     outline-offset: -1px;
+    cursor: text;
 }
 
 #timerInput::placeholder {
@@ -134,7 +140,7 @@ button#pauseResumeButton {
     transform: translateY(6px);
 }
 
-button#resetButton {
+button#resetButton, button#dashboardButton {
     color: var(--lightbrown);
     background-color: var(--beige);
     font-weight: 200;
@@ -146,7 +152,7 @@ button#resetButton {
     margin-top: 40px;
 }
 
-button#resetButton:hover {
+button#resetButton:hover, button#dashboardButton:hover {
     background-color: var(--hoverbeige);
 }
 
