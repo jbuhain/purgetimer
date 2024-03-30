@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .getElementById("dashboardButton")
       .addEventListener("click", function () {
           chrome.tabs.query({}, function(allTabs) {
-              const dashboardTabs = allTabs.filter(tab => tab.title === "purgetimer//settings");
+              const dashboardTabs = allTabs.filter(tab => tab.title === "purge-timer//settings");
               
               if (dashboardTabs.length > 0) {
                 chrome.tabs.update(dashboardTabs[0].id, { active: true });

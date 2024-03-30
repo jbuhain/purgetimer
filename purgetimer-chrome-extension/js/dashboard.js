@@ -2,6 +2,7 @@ let initialized = false;
 
 document.addEventListener("DOMContentLoaded", function () {
 
+
     let editor = CodeMirror.fromTextArea(document.getElementById("codeMirrorTextarea"), {
         lineNumbers: true, 
     });
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function getLinks(callback) {
         chrome.storage.local.get('links', function(result) {
             let links = result.links || [];
-            console.log('Retrieved links:', links);
+            // console.log('Retrieved links:', links);
             callback(links);
         });
     }
@@ -41,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let currentState = editor.getValue();
         if (initialized && currentState !== previousState) {
             document.getElementById("saveLinksButton").removeAttribute("disabled");
+            document.getElementById("revertChangesButton").removeAttribute("disabled");
         } else {
             document.getElementById("saveLinksButton").setAttribute("disabled", "disabled");
+            document.getElementById("revertChangesButton").setAttribute("disabled", "disabled");
         }
     });
 
@@ -53,5 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLinks(newLinks); 
         previousState = editor.getValue(); 
         document.getElementById("saveLinksButton").setAttribute("disabled", "disabled");
+        document.getElementById("revertChangesButton").setAttribute("disabled", "disabled");
+    });
+
+    document.getElementById("revertChangesButton").addEventListener("click", function () {
+        // load saved links into the textarea on page load
+        getLinks(function(links) {
+            let text = links.join('\n'); 
+            editor.setValue(text); 
+            previousState = text; 
+            initialized = true;
+        });
     });
 });
