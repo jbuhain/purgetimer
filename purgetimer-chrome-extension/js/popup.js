@@ -159,6 +159,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     
     document
+    .getElementById("purgedButton")
+    .addEventListener("click", function () {
+        // chrome.tabs.query({}, function(allTabs) {
+        //     const dashboardTabs = allTabs.filter(tab => tab.title === "purge-timer//settings");
+            
+        //     if (dashboardTabs.length > 0) {
+        //     chrome.tabs.update(dashboardTabs[0].id, { active: true });
+        //     chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
+        //     console.log("found")
+        //     } else {
+        //         chrome.tabs.create({ url: 'dashboard.html' });
+        //     }
+        // });
+        chrome.tabs.create({ url: 'purged.html' });
+    });
+
+
+    document
         .getElementById("resetButton")
         .addEventListener("click", function () {
             sendMessage("resetCountdown");

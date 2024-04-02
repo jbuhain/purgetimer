@@ -1,6 +1,7 @@
 let countdown;
 let countdownInterval;
 let countdownStart;
+let sessionTime;
 let programStatus = "NOT_STARTED";
 
 // Using this alarm to prevent chrome from stopping this program.
@@ -24,6 +25,7 @@ function createNewTab() {
 
 function startCountdown(seconds) {
     countdown = seconds;
+    sessionTime = seconds;
     countdownStart = Date.now();
     programStatus = "PLAYING";
 
@@ -88,6 +90,12 @@ function openLinks() {
 function getCountdown() {
     return countdown;
 }
+function getSessionTime() {
+    return sessionTime;
+}
+function getProgramStatus() {
+    return programStatus;
+}
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -96,7 +104,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.action === "getCountdown") {
         sendResponse({
             countdown: getCountdown(),
-            programStatus: programStatus,
+            programStatus: getProgramStatus(),
         });
     } else if (request.action === "clearCountdown") {
         clearCountdown();
@@ -106,5 +114,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         resumeCountdown();
     } else if (request.action === "resetCountdown") {
         clearCountdown();
+    }
+    else if (request.action === "getSessionTime") {
+        sendResponse({
+            sessionTime: getSessionTime(),
+            programStatus: getProgramStatus(),
+        });
     }
 });

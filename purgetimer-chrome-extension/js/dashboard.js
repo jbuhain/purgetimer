@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveLinks(links) {
         chrome.storage.local.set({ 'links': links }, function() {
-            // console.log('Links saved:', links);
+            console.log('Links saved:', links);
         });
     }
 
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function getLinks(callback) {
         chrome.storage.local.get('links', function(result) {
             let links = result.links || [];
-            // console.log('Retrieved links:', links);
+            console.log('Retrieved links:', links);
             callback(links);
         });
     }
