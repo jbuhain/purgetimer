@@ -4,23 +4,34 @@ let countdownStart;
 let sessionTime;
 let programStatus = "NOT_STARTED";
 
-// Using this alarm to prevent chrome from stopping this program.
-// Important!
-chrome.alarms.create({ periodInMinutes: 0.25 });
-chrome.alarms.onAlarm.addListener(() => {
-    console.log("Waking up program to keep timer running");
-});
-
-function closeAllTabs() {
-    chrome.tabs.query({}, function (tabs) {
-        tabs.forEach(function (tab) {
-            chrome.tabs.remove(tab.id);
-        });
-    });
-}
-
 function createNewTab() {
     chrome.tabs.create({});
+}
+
+function pauseCountdown() {
+    clearInterval(countdownInterval);
+    programStatus = "PAUSED";
+}
+
+function clearCountdown() {
+    clearInterval(countdownInterval);
+    countdown = undefined;
+    countdownStart = undefined;
+    programStatus = "NOT_STARTED";
+}
+
+function resetSessionTime() {
+    sessionTime = 0;
+}
+
+function getCountdown() {
+    return countdown;
+}
+function getSessionTime() {
+    return sessionTime;
+}
+function getProgramStatus() {
+    return programStatus;
 }
 
 function startCountdown(seconds) {
@@ -38,16 +49,63 @@ function startCountdown(seconds) {
             if (countdown <= 0) {
                 closeAllTabs();
                 clearCountdown();
-                openLinks();
-                createNewTab();
+                // openLinks();
+                openPurgedPage();
             }
         }
     }, 1000);
 }
 
-function pauseCountdown() {
-    clearInterval(countdownInterval);
-    programStatus = "PAUSED";
+function openPurgedPage() {
+    chrome.tabs.query({}, function (allTabs) {
+        const purgedTab = allTabs.filter(tab => tab.title === "purge-timer//purged");
+
+        // if (purgedTab.length > 0) {
+        //     chrome.tabs.update(purgedTab[0].id, { url: 'purged.html' }, function (tab) {
+        //         // console.log("Purged Page refreshed");
+        //     });
+        //     chrome.tabs.update(purgedTab[0].id, { active: true });
+        //     chrome.windows.update(purgedTab[0].windowId, { focused: true });
+        //     // console.log("purged page found");
+        // } else {
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                const currentIndex = tabs[0].index;
+                chrome.tabs.create({ url: 'purged.html', active: true, index: currentIndex + 1 }, function (tab) {
+                    console.log("New purged page created");
+                    chrome.windows.update(tab.windowId, { focused: true });
+                });
+            });
+            
+        // }
+    });
+    console.log("open purged page completed");
+}
+
+// Function to retrieve links from Chrome extension storage and open them in separate tabs
+// function openLinks() {
+//     chrome.storage.local.get('links', function(result) {
+//         var links = result.links || [];
+//         console.log('Retrieved links:', links);
+//         // Open each link in a separate tab
+//         links.forEach(function(link) {
+//             // Ensure that the link includes the protocol (e.g., "http://" or "https://")
+//             if (!link.match(/^https?:\/\//i)) {
+//                 // If the link doesn't include the protocol, prepend "http://"
+//                 link = "http://" + link;
+//             }
+//             // Open the link in a new tab
+//             chrome.tabs.create({ url: link });
+//         });
+//     });
+//     console.log("open link completed");
+// }
+
+function closeAllTabs() {
+    chrome.tabs.query({}, function (tabs) {
+        tabs.forEach(function (tab) {
+            chrome.tabs.remove(tab.id);
+        });
+    });
 }
 
 function resumeCountdown() {
@@ -62,40 +120,12 @@ function resumeCountdown() {
     programStatus = "PLAYING";
 }
 
-function clearCountdown() {
-    clearInterval(countdownInterval);
-    countdown = undefined;
-    countdownStart = undefined;
-    programStatus = "NOT_STARTED";
-}
-
-// Function to retrieve links from Chrome extension storage and open them in separate tabs
-function openLinks() {
-    chrome.storage.local.get('links', function(result) {
-        var links = result.links || [];
-        console.log('Retrieved links:', links);
-        // Open each link in a separate tab
-        links.forEach(function(link) {
-            // Ensure that the link includes the protocol (e.g., "http://" or "https://")
-            if (!link.match(/^https?:\/\//i)) {
-                // If the link doesn't include the protocol, prepend "http://"
-                link = "http://" + link;
-            }
-            // Open the link in a new tab
-            chrome.tabs.create({ url: link });
-        });
-    });
-}
-
-function getCountdown() {
-    return countdown;
-}
-function getSessionTime() {
-    return sessionTime;
-}
-function getProgramStatus() {
-    return programStatus;
-}
+// Using this alarm to prevent chrome from stopping this program.
+// Important!
+chrome.alarms.create({ periodInMinutes: 0.25 });
+chrome.alarms.onAlarm.addListener(() => {
+    console.log("Waking up program to keep timer running");
+}); 
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -114,6 +144,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         resumeCountdown();
     } else if (request.action === "resetCountdown") {
         clearCountdown();
+        resetSessionTime();
     }
     else if (request.action === "getSessionTime") {
         sendResponse({
