@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateSessionTime(seconds) {
 
         if (typeof seconds !== "number" || isNaN(seconds) || seconds < 0) {
-            return false;
+            document.getElementById(
+                "sessionTime"
+            ).innerText = 'N/A';
         }
 
         const minutes = Math.floor(seconds / 60);
@@ -21,25 +23,50 @@ document.addEventListener("DOMContentLoaded", function () {
             "sessionTime"
         ).innerText = `${formattedMinutes}m ${formattedSeconds}s`;
 
-
-        // document.getElementById("sessionTime").textContent = receivedSessionTime;
     }
-    
+
+    // Function to retrieve links from Chrome extension storage and open them in separate tabs
+    function openLinks() {
+        chrome.storage.local.get('links', function (result) {
+            var links = result.links || [];
+            console.log('Retrieved links:', links);
+            // Open each link in a separate tab
+            links.forEach(function (link) {
+                // Ensure that the link includes the protocol (e.g., "http://" or "https://")
+                if (!link.match(/^https?:\/\//i)) {
+                    // If the link doesn't include the protocol, prepend "http://"
+                    link = "http://" + link;
+                }
+                // Open the link in a new tab
+                chrome.tabs.create({ url: link });
+            });
+        });
+    }
+
     function sendMessage(action, data, callback) {
         chrome.runtime.sendMessage({ action, data }, callback);
     }
+
+    document
+        .getElementById("openLinksButton")
+        .addEventListener("click", function () {
+            openLinks();
+        });
+
     sendMessage("getSessionTime", null, function (response) {
-        console.log("sent");
+        document.getElementById(
+            "sessionTime"
+        ).innerText = 'n/a';
         if (response) {
-            console.log("response found for session time");
-            if(response.sessionTime !== undefined){
+            console.log("response found for session time", response.sessionTime);
+            if (response.sessionTime !== undefined) {
                 updateSessionTime(response.sessionTime);
-            } 
+            }
         }
     });
+
     
-    console.log("booted");
-    
+
 });
 
 
