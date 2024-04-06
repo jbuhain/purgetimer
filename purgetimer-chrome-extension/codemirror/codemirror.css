@@ -29,7 +29,7 @@
 }
 .CodeMirror pre.CodeMirror-line,
 .CodeMirror pre.CodeMirror-line-like {
-  padding: 0 10px; /* Horizontal padding of content */
+  padding: 5 10px; /* Horizontal padding of content */
 }
 
 .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
@@ -43,9 +43,9 @@
   background-color: var(--brown1);
   white-space: nowrap;
 }
-.CodeMirror-linenumbers {}
+
 .CodeMirror-linenumber {
-  padding: 0 3px 0 5px;
+  padding: 5px 4px 0px 7px;
   min-width: 20px;
   text-align: right;
   color: var(--beige);
