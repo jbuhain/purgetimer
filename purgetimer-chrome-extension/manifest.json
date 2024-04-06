@@ -1,24 +1,16 @@
 {
-    "manifest_version": 3,
+    "version": "1.0",
     "name": "Purge Timer",
+    "manifest_version": 3,
+    "offline_enabled": true,
     "description": "Automatically closes all tabs when the timer ends.",
     "author": "jbuhain",
-    "version": "1.0",
-    "action": {
-        "default_popup": "popup.html",
-        "default_icon": {
-            "16": "assets/icon16px.png",
-            "48": "assets/icon48px.png",
-            "128": "assets/icon128px.png"
-        }
-    },
     "background": {
         "service_worker": "js/background.js"
     },
-    "icons": {
-        "16": "assets/icon16px.png",
-        "48": "assets/icon48px.png",
-        "128": "assets/icon128px.png"
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "dashboard.html"
     },
     "web_accessible_resources": [
         {
@@ -26,5 +18,23 @@
         "matches": ["<all_urls>"]
         }
     ],
-    "permissions": ["alarms","tabs","storage"]
+    "permissions": [
+        "alarms",
+        "tabs",
+        "storage",
+        "scripting"
+    ],
+    "icons": {
+        "16": "assets/icon16px.png",
+        "48": "assets/icon48px.png",
+        "128": "assets/icon128px.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "assets/icon16px.png",
+            "48": "assets/icon48px.png",
+            "128": "assets/icon128px.png"
+        }
+    }
 }
