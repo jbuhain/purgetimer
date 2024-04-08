@@ -1,22 +1,61 @@
 <html>
 
 <head>
-    <title>Purge Timer - Dashboard</title>
+    <title>purge-timer//settings</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;600&family=Jomolhari&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/common.css" />
     <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
     <link rel="stylesheet" href="codemirror/codemirror.css">
 </head>
 
 <body>
-    <div id="content">
+    <div id="settings-block">
+        <h1>purge-timer//settings</h1>
+        <h1>additional-features</h1>
+        <div>
+            <label>
+                <input type="checkbox">"Full Send" - Once timer is started, it CANNOT be canceled.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Display Timer at all times" - Displays timer on focused tab.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Launch default tabs" - Opens default tabs after purging.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Analog style clock" - Sleeker timer.
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox">"Simple Mode" - Pre-defined time buttons.
+            </label>
+        </div>
+
+        <h1>links-to-open-after-purging</h1>
+        <div>
+            <button id="saveLinksButton">Save links</button>
+            <button id="revertChangesButton">Revert Changes</button>
+        </div>
+        
         <textarea id="codeMirrorTextarea"></textarea>
-        <script src="codemirror/codemirror.js"></script>
-        <script src="js/dashboard.js"></script>
+        <h1>*note: one link per line</h1>
+        
+        <div id="saveLinksMessage"></div>
+
     </div>
+    <script src="codemirror/codemirror.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 
 </html>

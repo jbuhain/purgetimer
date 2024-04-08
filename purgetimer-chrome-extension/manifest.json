@@ -26,5 +26,5 @@
         "matches": ["<all_urls>"]
         }
     ],
-    "permissions": ["alarms","tabs"]
+    "permissions": ["alarms","tabs","storage"]
 }

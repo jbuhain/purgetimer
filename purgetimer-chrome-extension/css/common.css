@@ -5,6 +5,7 @@
     --lightbrown: #7a070759;
     --regbrown: #2f120eb0;
     --hoverbrown: #2f120e9a;
+    --newbrown: #2f160e;
 }
 
 .hidden {
@@ -17,4 +18,9 @@
 
 button:hover {
     cursor: pointer;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
 }

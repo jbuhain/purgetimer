@@ -1,7 +1,43 @@
 body {
     margin: 0;
     padding: 0;
-    width: 350px;
+    width: 600px;
     display: block;
-    background-color: var(--regbrown);
+    background-color: var(--newbrown);
+}
+
+#settings-block {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    margin-top: 0px;
+}
+
+h1, button {
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+}
+#saveLinksButton {
+    width: 200px;
+    color: var(--beige);
+    background-color: var(--darkbrown);
+    border:none;
+}
+#saveLinksButton:disabled {
+    /* color: var(--newbrown);*/
+    background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
+    color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
+    border-color: light-dark(rgba(118, 118, 118, 0.3), rgba(195, 195, 195, 0.3));
+    /* cursor: default; */
+    /* visibility: hidden; */
+}
+label {
+    color: var(--beige)
+}
+h1 {
+    color: var(--beige);
+    font-size: 30px;
+    font-weight: 600;
+    height: auto;
+    line-height: 50px;
 }
