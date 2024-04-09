@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (programStatus === "NOT_STARTED") {
                 if (defaultTime > 0) {
                     sendMessage("startCountdown", { seconds: defaultTime });
-                    sendMessage("removePurgedTab");
+                    // sendMessage("removePurgedTab");
                 }
                 else {
                     alert("Invalid input. Set the timer > 0 seconds.")
