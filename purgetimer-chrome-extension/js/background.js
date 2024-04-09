@@ -34,6 +34,18 @@ function getProgramStatus() {
     return programStatus;
 }
 
+function removePurgedTab() {
+    chrome.tabs.query({}, function (allTabs) {
+        const purgedTab = allTabs.find(tab => tab.title === "purge-timer//purged");
+
+        if (purgedTab) {
+            chrome.tabs.remove(purgedTab.id, function () {
+                console.log("Purged Page closed");
+            });
+        }
+    });
+}
+
 function startCountdown(seconds) {
     countdown = seconds;
     sessionTime = seconds;
@@ -81,25 +93,6 @@ function openPurgedPage() {
     console.log("open purged page completed");
 }
 
-// Function to retrieve links from Chrome extension storage and open them in separate tabs
-// function openLinks() {
-//     chrome.storage.local.get('links', function(result) {
-//         var links = result.links || [];
-//         console.log('Retrieved links:', links);
-//         // Open each link in a separate tab
-//         links.forEach(function(link) {
-//             // Ensure that the link includes the protocol (e.g., "http://" or "https://")
-//             if (!link.match(/^https?:\/\//i)) {
-//                 // If the link doesn't include the protocol, prepend "http://"
-//                 link = "http://" + link;
-//             }
-//             // Open the link in a new tab
-//             chrome.tabs.create({ url: link });
-//         });
-//     });
-//     console.log("open link completed");
-// }
-
 function closeAllTabs() {
     chrome.tabs.query({}, function (tabs) {
         tabs.forEach(function (tab) {
@@ -122,9 +115,10 @@ function resumeCountdown() {
 
 // Using this alarm to prevent chrome from stopping this program.
 // Important!
+// TODO: Maybe add this alarm only when timer is running. But browser might slow down timer for now.
 chrome.alarms.create({ periodInMinutes: 0.25 });
 chrome.alarms.onAlarm.addListener(() => {
-    console.log("Waking up program to keep timer running");
+    console.log("Sending this message to keep timer running");
 }); 
 
 // Listen for messages from the popup
@@ -145,8 +139,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.action === "resetCountdown") {
         clearCountdown();
         resetSessionTime();
-    }
-    else if (request.action === "getSessionTime") {
+    } else if (request.action === "removePurgedTab") {
+        removePurgedTab();
+    } else if (request.action === "getSessionTime") {
         sendResponse({
             sessionTime: getSessionTime(),
             programStatus: getProgramStatus(),

@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateCountdownDisplay() {
+        
+        if(!programStatus) document.getElementById("content").style.display = "block";
+
         sendMessage("getCountdown", null, function (response) {
             if (response) {
                 if (response.countdown !== undefined) insertTime(response.countdown);
@@ -101,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (programStatus === "NOT_STARTED") {
                 if (defaultTime > 0) {
                     sendMessage("startCountdown", { seconds: defaultTime });
+                    sendMessage("removePurgedTab");
                 }
                 else {
                     alert("Invalid input. Set the timer > 0 seconds.")
@@ -109,8 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendMessage("pauseCountdown");
             }
         });
-
-
 
     document.getElementById("timerInput").addEventListener("input", function () {
         // Remove non-numeric characters and limit the input length to 4 characters
@@ -134,8 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const minutes = parseInt(timerInput.value.slice(0, 2));
         const seconds = parseInt(timerInput.value.slice(3));
 
-
-
         defaultTime = minutes * 60 + seconds;
         // TODO:format the value given the method int insertTime() and set it to defaultTime
         insertTime(defaultTime);
@@ -146,36 +146,37 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("dashboardButton")
         .addEventListener("click", function () {
             chrome.tabs.query({}, function (allTabs) {
+                // This filter could be improved i'm sure...
                 const dashboardTabs = allTabs.filter(tab => tab.title === "purge-timer//settings");
 
                 if (dashboardTabs.length > 0) {
                     chrome.tabs.update(dashboardTabs[0].id, { active: true });
                     chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
-                    console.log("found")
+                    // console.log("found")
                 } else {
                     chrome.tabs.create({ url: 'dashboard.html' });
                 }
             });
         });
 
-    document
-        .getElementById("purgedButton")
-        .addEventListener("click", function () {
-            chrome.tabs.query({}, function (allTabs) {
-                const purgedTab = allTabs.filter(tab => tab.title === "purge-timer//purged");
+    // document
+    //     .getElementById("purgedButton")
+    //     .addEventListener("click", function () {
+    //         chrome.tabs.query({}, function (allTabs) {
+    //             const purgedTab = allTabs.filter(tab => tab.title === "purge-timer//purged");
 
-                if (purgedTab.length > 0) {
-                    chrome.tabs.update(purgedTab[0].id, { url: 'purged.html' }, function (tab) {
-                        // console.log("Purged Page refreshed");
-                    });
-                    chrome.tabs.update(purgedTab[0].id, { active: true });
-                    chrome.windows.update(purgedTab[0].windowId, { focused: true });
-                    // console.log("purged page found");
-                } else {
-                    chrome.tabs.create({ url: 'purged.html' });
-                }
-            });
-        });
+    //             if (purgedTab.length > 0) {
+    //                 chrome.tabs.update(purgedTab[0].id, { url: 'purged.html' }, function (tab) {
+    //                     // console.log("Purged Page refreshed");
+    //                 });
+    //                 chrome.tabs.update(purgedTab[0].id, { active: true });
+    //                 chrome.windows.update(purgedTab[0].windowId, { focused: true });
+    //                 // console.log("purged page found");
+    //             } else {
+    //                 chrome.tabs.create({ url: 'purged.html' });
+    //             }
+    //         });
+    //     });
 
 
     document
@@ -188,3 +189,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setInterval(updateCountdownDisplay, 100);
 });
+
+
+// Scrapped. Moved logic to background.js
+
+// function removePurgedTab() {
+//     chrome.tabs.query({}, function (allTabs) {
+//         const purgedTab = allTabs.find(tab => tab.title === "purge-timer//purged");
+
+//         if (purgedTab) {
+//             chrome.tabs.remove(purgedTab.id, function () {
+//                 console.log("Purged Page closed");
+//             });
+//         }
+//     });
+// }
