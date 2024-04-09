@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("pauseResumeButton").innerText = "start";
                 document.getElementById("timerInput").style.display = "block";
                 document.getElementById("timerDisplay").style.display = "none";
-                
+
                 document.getElementById("resetButton").disabled = true;
                 document.getElementById("resetButton").style.display = "none";
-                document.getElementById("dashboardButton").style.display = "block";
+                document.getElementById("optionsButton").style.display = "block";
 
-                
+
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
                 document.getElementById("pauseResumeButton").classList.remove("pressed");
                 break;
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
-                document.getElementById("dashboardButton").style.display = "none";
+                document.getElementById("optionsButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.remove("notPressed");
                 document.getElementById("pauseResumeButton").classList.add("pressed");
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
-                document.getElementById("dashboardButton").style.display = "none";
+                document.getElementById("optionsButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
                 document.getElementById("pauseResumeButton").classList.remove("pressed");
@@ -59,11 +59,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateCountdownDisplay() {
+        
+        if(!programStatus) document.getElementById("content").style.display = "block";
+
         sendMessage("getCountdown", null, function (response) {
             if (response) {
-                if(response.countdown !== undefined) insertTime(response.countdown);
-                
-                if(programStatus !== response.programStatus){
+                if (response.countdown !== undefined) insertTime(response.countdown);
+
+                if (programStatus !== response.programStatus) {
                     programStatus = response.programStatus;
                     checkStatus();
                 }
@@ -99,8 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
             if (programStatus === "PAUSED") {
                 sendMessage("resumeCountdown");
             } else if (programStatus === "NOT_STARTED") {
-                if (defaultTime > 0){
+                if (defaultTime > 0) {
                     sendMessage("startCountdown", { seconds: defaultTime });
+                    // sendMessage("removePurgedTab");
                 }
                 else {
                     alert("Invalid input. Set the timer > 0 seconds.")
@@ -110,12 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    
-
     document.getElementById("timerInput").addEventListener("input", function () {
         // Remove non-numeric characters and limit the input length to 4 characters
         timerInput.value = timerInput.value.replace(/\D/g, '');
-        
+
         // Pad the input value with zeros from the right side until length is 4
         timerInput.value = timerInput.value.padStart(4, '0');
 
@@ -127,37 +129,56 @@ document.addEventListener("DOMContentLoaded", function () {
             timerInput.value = timerInput.value.slice(0, -2) + ':' + timerInput.value.slice(-2);
         }
 
-        if(timerInput.value==="00:00") {
+        if (timerInput.value === "00:00") {
             timerInput.value = "";
         }
-        
+
         const minutes = parseInt(timerInput.value.slice(0, 2));
         const seconds = parseInt(timerInput.value.slice(3));
-
-
 
         defaultTime = minutes * 60 + seconds;
         // TODO:format the value given the method int insertTime() and set it to defaultTime
         insertTime(defaultTime);
 
-      });
+    });
 
-      document
-      .getElementById("dashboardButton")
-      .addEventListener("click", function () {
-          chrome.tabs.query({}, function(allTabs) {
-              const dashboardTabs = allTabs.filter(tab => tab.title === "purge-timer//settings");
-              
-              if (dashboardTabs.length > 0) {
-                chrome.tabs.update(dashboardTabs[0].id, { active: true });
-                chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
-                console.log("found")
-              } else {
-                  chrome.tabs.create({ url: 'dashboard.html' });
-              }
-          });
-      });
-    
+    document
+        .getElementById("optionsButton")
+        .addEventListener("click", function () {
+            chrome.tabs.query({}, function (allTabs) {
+                // This filter could be improved i'm sure...
+                const optionTab = allTabs.filter(tab => tab.title === "purge-timer//options");
+
+                if (optionTab.length > 0) {
+                    chrome.tabs.update(optionTab[0].id, { active: true });
+                    chrome.windows.update(optionTab[0].windowId, { focused: true });
+                    // console.log("found")
+                } else {
+                    chrome.tabs.create({ url: 'options.html' });
+                }
+            });
+        });
+
+    // document
+    //     .getElementById("purgedButton")
+    //     .addEventListener("click", function () {
+    //         chrome.tabs.query({}, function (allTabs) {
+    //             const purgedTab = allTabs.filter(tab => tab.title === "purge-timer//purged");
+
+    //             if (purgedTab.length > 0) {
+    //                 chrome.tabs.update(purgedTab[0].id, { url: 'purged.html' }, function (tab) {
+    //                     // console.log("Purged Page refreshed");
+    //                 });
+    //                 chrome.tabs.update(purgedTab[0].id, { active: true });
+    //                 chrome.windows.update(purgedTab[0].windowId, { focused: true });
+    //                 // console.log("purged page found");
+    //             } else {
+    //                 chrome.tabs.create({ url: 'purged.html' });
+    //             }
+    //         });
+    //     });
+
+
     document
         .getElementById("resetButton")
         .addEventListener("click", function () {
@@ -166,6 +187,5 @@ document.addEventListener("DOMContentLoaded", function () {
             checkStatus();
         });
 
-    // updateCountdownDisplay();
     setInterval(updateCountdownDisplay, 100);
 });

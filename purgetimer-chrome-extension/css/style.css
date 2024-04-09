@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    width: 350px;
     display: block;
     background-color: var(--beige);
 }
@@ -12,6 +11,7 @@ body, h1, #timerInput, h1#timerDisplay, button#pauseResumeButton {
 }
 
 #content {
+    width: 350px;
     padding: 5px 15px 0px 15px;
     outline: 2px solid var(--darkbrown);
     outline-offset: -2px;
@@ -34,7 +34,6 @@ h2#bottomText {
     font-size: 13px;
     color: var(--darkbrown);
     user-select: none;
-    /* background-color: red; */
 }
 
 h1#topHeading {
@@ -140,7 +139,7 @@ button#pauseResumeButton {
     transform: translateY(6px);
 }
 
-button#resetButton, button#dashboardButton {
+button#resetButton, button#optionsButton {
     color: var(--lightbrown);
     background-color: var(--beige);
     font-weight: 200;
@@ -152,7 +151,7 @@ button#resetButton, button#dashboardButton {
     margin-top: 40px;
 }
 
-button#resetButton:hover, button#dashboardButton:hover {
+button#resetButton:hover, button#optionsButton:hover {
     background-color: var(--hoverbeige);
 }
 

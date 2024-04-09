@@ -1,0 +1,62 @@
+body {
+    background-color: var(--newbrown);
+}
+
+/* ::selection {
+    background-color: var(--highlightyellow);
+} */
+
+#content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    width: 200px;
+    height: 40px;
+    border:none;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+#buttons-block {
+    margin-top: 10px;
+}
+
+h1, h2 {
+    text-align: center;
+    font-family: "Jomolhari", serif;
+    font-style: normal;
+}
+
+h1 {
+    color: var(--beige);
+    font-size: 30px;
+    font-weight: 600;
+    height: auto;
+    line-height: 60px;
+}
+
+h2 {
+    font-style: italic;
+    color: var(--beige);
+    font-size: 16px;
+    font-weight: 400;
+    height: auto;
+    line-height: 50px;
+}
+
+#openLinksButton {
+    font-family: "Georgia", serif;
+    color: var(--beige);
+    background-color: var(--olivegreen);
+    border: none;
+}
+
+#openLinksButton:hover {
+    background-color: var(--lightolivegreen);
+}
