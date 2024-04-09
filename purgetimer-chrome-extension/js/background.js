@@ -3,9 +3,20 @@ let countdownInterval;
 let countdownStart;
 let sessionTime;
 let programStatus = "NOT_STARTED";
+const purgedTabTitle = "purge-timer//purged";
+const purgedURL = "purged.html";
 
-function createNewTab() {
-    chrome.tabs.create({});
+function createTab (url) {
+    return new Promise(resolve => {
+        chrome.tabs.create({url}, async tab => {
+            chrome.tabs.onUpdated.addListener(function listener (tabId, info) {
+                if (info.status === 'complete' && tabId === tab.id) {
+                    chrome.tabs.onUpdated.removeListener(listener);
+                    resolve(tab);
+                }
+            });
+        });
+    });
 }
 
 function pauseCountdown() {
@@ -36,11 +47,11 @@ function getProgramStatus() {
 
 function removePurgedTab() {
     chrome.tabs.query({}, function (allTabs) {
-        const purgedTab = allTabs.find(tab => tab.title === "purge-timer//purged");
+        const purgedTab = allTabs.find(tab => tab.title === purgedTabTitle);
 
         if (purgedTab) {
             chrome.tabs.remove(purgedTab.id, function () {
-                console.log("Purged Page closed");
+                // console.log("Purged Page closed");
             });
         }
     });
@@ -59,7 +70,7 @@ function startCountdown(seconds) {
             const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
             countdown = seconds - elapsedSeconds;
             if (countdown <= 0) {
-                closeAllTabs();
+                // closeAllTabs();
                 clearCountdown();
                 // openLinks();
                 openPurgedPage();
@@ -68,29 +79,43 @@ function startCountdown(seconds) {
     }, 1000);
 }
 
-function openPurgedPage() {
-    chrome.tabs.query({}, function (allTabs) {
-        const purgedTab = allTabs.filter(tab => tab.title === "purge-timer//purged");
-
-        // if (purgedTab.length > 0) {
-        //     chrome.tabs.update(purgedTab[0].id, { url: 'purged.html' }, function (tab) {
-        //         // console.log("Purged Page refreshed");
-        //     });
-        //     chrome.tabs.update(purgedTab[0].id, { active: true });
-        //     chrome.windows.update(purgedTab[0].windowId, { focused: true });
-        //     // console.log("purged page found");
-        // } else {
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                const currentIndex = tabs[0].index;
-                chrome.tabs.create({ url: 'purged.html', active: true, index: currentIndex + 1 }, function (tab) {
-                    console.log("New purged page created");
-                    chrome.windows.update(tab.windowId, { focused: true });
-                });
-            });
-            
-        // }
+function closeAllTabsExceptPurged() {
+    chrome.tabs.query({}, function (tabs) {
+        tabs.forEach(function (tab) {
+            if( tab.title !== purgedTabTitle) {
+                chrome.tabs.remove(tab.id);
+            }
+        });
     });
-    console.log("open purged page completed");
+}
+
+async function openPurgedPage() {
+    try {
+        const allTabs = await new Promise((resolve, reject) => {
+            chrome.tabs.query({}, tabs => resolve(tabs));
+        });
+
+        const purgedTab = allTabs.find(tab => tab.title === purgedTabTitle);
+
+        if (purgedTab) {
+            await new Promise((resolve, reject) => {
+                chrome.tabs.update(purgedTab.id, { url: purgedURL }, () => resolve());
+            });
+            closeAllTabsExceptPurged();
+            await new Promise((resolve, reject) => {
+                chrome.tabs.update(purgedTab.id, { active: true }, () => resolve());
+            });
+            await new Promise((resolve, reject) => {
+                chrome.windows.update(purgedTab.windowId, { focused: true }, () => resolve());
+            });
+        } else {
+            const tab = await createTab(purgedURL);
+            closeAllTabsExceptPurged();
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+
 }
 
 function closeAllTabs() {
