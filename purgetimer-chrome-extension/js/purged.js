@@ -1,5 +1,10 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    function sendMessage(action, data, callback) {
+        chrome.runtime.sendMessage({ action, data }, callback);
+    }
+    
     function updateSessionTime(seconds) {
 
         if (typeof seconds !== "number" || isNaN(seconds) || seconds < 0) {
@@ -25,10 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    // Function to retrieve links from Chrome extension storage and open them in separate tabs
+    // retrieves links from local storage and opens them in separate tabs
     function openLinks() {
         chrome.storage.local.get('links', function (result) {
-            var links = result.links || [];
+            let links = result.links || [];
             console.log('Retrieved links:', links);
             // Open each link in a separate tab
             links.forEach(function (link) {
@@ -41,10 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 chrome.tabs.create({ url: link });
             });
         });
-    }
-
-    function sendMessage(action, data, callback) {
-        chrome.runtime.sendMessage({ action, data }, callback);
     }
 
     document
