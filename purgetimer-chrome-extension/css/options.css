@@ -6,7 +6,7 @@ body {
     background-color: var(--newbrown);
 }
 
-#settings-block {
+#options-block {
     display: flex;
     flex-direction: column;
     margin-left: 30px;
@@ -55,14 +55,12 @@ button {
     background-color: var(--disabledgray);
     color: var(--lightdisabledgray);
     cursor: default;
-    /* color: red; */
 }
 
 #revertChangesButton:disabled{
     background-color: var(--disabledgray);
     color: var(--lightdisabledgray);
     cursor: default;
-    /* color: red; */
 }
 
 label {

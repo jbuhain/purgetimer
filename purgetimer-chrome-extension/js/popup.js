@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.getElementById("resetButton").disabled = true;
                 document.getElementById("resetButton").style.display = "none";
-                document.getElementById("dashboardButton").style.display = "block";
+                document.getElementById("optionsButton").style.display = "block";
 
 
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
-                document.getElementById("dashboardButton").style.display = "none";
+                document.getElementById("optionsButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.remove("notPressed");
                 document.getElementById("pauseResumeButton").classList.add("pressed");
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("resetButton").style.display = "block";
                 document.getElementById("timerInput").style.display = "none";
                 document.getElementById("timerDisplay").style.display = "block";
-                document.getElementById("dashboardButton").style.display = "none";
+                document.getElementById("optionsButton").style.display = "none";
 
                 document.getElementById("pauseResumeButton").classList.add("notPressed");
                 document.getElementById("pauseResumeButton").classList.remove("pressed");
@@ -143,18 +143,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document
-        .getElementById("dashboardButton")
+        .getElementById("optionsButton")
         .addEventListener("click", function () {
             chrome.tabs.query({}, function (allTabs) {
                 // This filter could be improved i'm sure...
-                const dashboardTabs = allTabs.filter(tab => tab.title === "purge-timer//settings");
+                const optionTab = allTabs.filter(tab => tab.title === "purge-timer//options");
 
-                if (dashboardTabs.length > 0) {
-                    chrome.tabs.update(dashboardTabs[0].id, { active: true });
-                    chrome.windows.update(dashboardTabs[0].windowId, { focused: true });
+                if (optionTab.length > 0) {
+                    chrome.tabs.update(optionTab[0].id, { active: true });
+                    chrome.windows.update(optionTab[0].windowId, { focused: true });
                     // console.log("found")
                 } else {
-                    chrome.tabs.create({ url: 'dashboard.html' });
+                    chrome.tabs.create({ url: 'options.html' });
                 }
             });
         });
@@ -189,18 +189,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setInterval(updateCountdownDisplay, 100);
 });
-
-
-// Scrapped. Moved logic to background.js
-
-// function removePurgedTab() {
-//     chrome.tabs.query({}, function (allTabs) {
-//         const purgedTab = allTabs.find(tab => tab.title === "purge-timer//purged");
-
-//         if (purgedTab) {
-//             chrome.tabs.remove(purgedTab.id, function () {
-//                 console.log("Purged Page closed");
-//             });
-//         }
-//     });
-// }

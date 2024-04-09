@@ -10,11 +10,11 @@
     },
     "options_ui": {
         "open_in_tab": true,
-        "page": "dashboard.html"
+        "page": "options.html"
     },
     "web_accessible_resources": [
         {
-        "resources": ["codemirror.css", "codemirror.js", "dashboard.html"],
+        "resources": ["codemirror.css", "codemirror.js", "options.html"],
         "matches": ["<all_urls>"]
         }
     ],

@@ -139,7 +139,7 @@ button#pauseResumeButton {
     transform: translateY(6px);
 }
 
-button#resetButton, button#dashboardButton {
+button#resetButton, button#optionsButton {
     color: var(--lightbrown);
     background-color: var(--beige);
     font-weight: 200;
@@ -151,7 +151,7 @@ button#resetButton, button#dashboardButton {
     margin-top: 40px;
 }
 
-button#resetButton:hover, button#dashboardButton:hover {
+button#resetButton:hover, button#optionsButton:hover {
     background-color: var(--hoverbeige);
 }
 
