@@ -6,6 +6,17 @@
     --regbrown: #2f120eb0;
     --hoverbrown: #2f120e9a;
     --newbrown: #2f160e;
+    --olivegreen: #62603F;
+    --lightolivegreen: #6e6c3a;
+    --bluegray: #3F4962;
+    --disabledgray: #8B7D7D;
+    --lightbluegray: #566588;
+    --lightdisabledgray: #b3a1a1;
+    --sand: #ddb98bbd;
+}
+
+::selection {
+    background-color: var(--sand);
 }
 
 .hidden {
