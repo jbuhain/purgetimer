@@ -17,6 +17,15 @@ body, h1, #timerInput, h1#timerDisplay, button#pauseResumeButton {
     outline-offset: -2px;
 }
 
+label {
+    font-family: "Inter", serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 26px;
+    color: var(--darkbrown);
+}
+
 h1 {
     margin: 0;
     padding: 0;

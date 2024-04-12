@@ -115,7 +115,80 @@ async function openPurgedPage() {
     } catch (error) {
         console.error("Error:", error);
     }
+}
 
+function closeAllTabsExceptStartPage() {
+    console.log("deleting all tabs except start");
+    chrome.tabs.query({}, function (tabs) {
+        tabs.forEach(function (tab) {
+            if( tab.title !== "purge-timer//started") {
+                chrome.tabs.remove(tab.id);
+            }
+        });
+    });
+}
+
+function removeStartTab() {
+    chrome.tabs.query({}, function (allTabs) {
+        const purgedTab = allTabs.find(tab => tab.title === "purge-timer//started");
+
+        if (purgedTab) {
+            chrome.tabs.remove(purgedTab.id, function () {
+                // console.log("Start Page closed");
+            });
+        }
+    });
+}
+
+function openSessionTabs() {
+    chrome.storage.session.get('SessionTabs', function (result) {
+        let links = result.SessionTabs || [];
+        console.log('Retrieved links:', links);
+        // Open each link in a separate tab
+        links.forEach(function (link, index) {
+            // Ensure that the link includes the protocol (e.g., "http://" or "https://")
+            if (!link.match(/^https?:\/\//i)) {
+                // If the link doesn't include the protocol, prepend "http://"
+                link = "http://" + link;
+            }
+            // Open the link in a new tab
+            chrome.tabs.create({ url: link }, function(tab) {
+                // Check if this is the last link to be opened
+                if (index === links.length - 1) {
+                    // Call removePurgedTab() after all links have been opened
+                    removeStartTab();
+                }
+            });
+        });
+    });
+}
+
+async function openStartPage() {
+    try {
+        const allTabs = await new Promise((resolve, reject) => {
+            chrome.tabs.query({}, tabs => resolve(tabs));
+        });
+
+        const purgedTab = allTabs.find(tab => tab.title === "purge-timer//started");
+
+        if (purgedTab) {
+            await new Promise((resolve, reject) => {
+                chrome.tabs.update(purgedTab.id, { url: "start.html" }, () => resolve());
+            });
+            closeAllTabsExceptStartPage();
+            await new Promise((resolve, reject) => {
+                chrome.tabs.update(purgedTab.id, { active: true }, () => resolve());
+            });
+            await new Promise((resolve, reject) => {
+                chrome.windows.update(purgedTab.windowId, { focused: true }, () => resolve());
+            });
+        } else {
+            const tab = await createTab("start.html");
+            closeAllTabsExceptStartPage();
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
 function closeAllTabs() {
@@ -140,7 +213,7 @@ function resumeCountdown() {
 
 // Using this alarm to prevent chrome from stopping this program.
 // Important!
-// TODO: Maybe add this alarm only when timer is running. But browser might slow down timer for now.
+// TODO: Maybe add this alarm only when timer is running.
 chrome.alarms.create({ periodInMinutes: 0.25 });
 chrome.alarms.onAlarm.addListener(() => {
     console.log("Sending this message to keep timer running");
@@ -150,6 +223,9 @@ chrome.alarms.onAlarm.addListener(() => {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.action === "startCountdown") {
         startCountdown(request.data.seconds);
+        if (request.data.mode) {
+            openStartPage();
+        }
     } else if (request.action === "getCountdown") {
         sendResponse({
             countdown: getCountdown(),
@@ -164,6 +240,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.action === "resetCountdown") {
         clearCountdown();
         resetSessionTime();
+        openSessionTabs();
     } else if (request.action === "removePurgedTab") {
         removePurgedTab();
     } else if (request.action === "getSessionTime") {

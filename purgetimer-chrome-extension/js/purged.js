@@ -30,6 +30,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+    function getSessionTabs() {
+        chrome.storage.session.get('SessionTabs', function(result) {
+            // let links = result.SessionTabs || [];
+            console.log('Retrieved session links:', result);
+        });
+        // have another callback? to close the links
+    }
+
+    function openSessionTabs() {
+        chrome.storage.session.get('SessionTabs', function (result) {
+            let links = result.SessionTabs || [];
+            console.log('Retrieved links:', links);
+            // Open each link in a separate tab
+            links.forEach(function (link, index) {
+                // Ensure that the link includes the protocol (e.g., "http://" or "https://")
+                if (!link.match(/^https?:\/\//i)) {
+                    // If the link doesn't include the protocol, prepend "http://"
+                    link = "http://" + link;
+                }
+                // Open the link in a new tab
+                chrome.tabs.create({ url: link }, function(tab) {
+                    // Check if this is the last link to be opened
+                    if (index === links.length - 1) {
+                        // Call removePurgedTab() after all links have been opened
+                        // removePurgedTab();
+                    }
+                });
+            });
+        });
+    }
+
     function removePurgedTab() {
         chrome.tabs.query({}, function (allTabs) {
             const purgedTab = allTabs.find(tab => tab.title === "purge-timer//purged");
@@ -43,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // retrieves links from local storage and opens them in separate tabs
-    function openLinks() {
+    function openStarredLinks() {
         chrome.storage.local.get('links', function (result) {
             let links = result.links || [];
             console.log('Retrieved links:', links);
@@ -67,10 +98,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document
-        .getElementById("openLinksButton")
+        .getElementById("openStarredLinksButton")
         .addEventListener("click", function () {
-            openLinks();
+            openStarredLinks();
         });
+    
+    document
+    .getElementById("openTempLinksButton")
+    .addEventListener("click", function () {
+        openSessionTabs();
+    });
 
     sendMessage("getSessionTime", null, function (response) {
         document.getElementById(

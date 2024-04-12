@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     let defaultTime = 0;
     let programStatus;
+    let saveCurrentTabsToggle = true;
+
     function checkStatus() {
         switch (programStatus) {
             case "NOT_STARTED":
@@ -96,6 +98,28 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
     }
 
+    function storeOpenedTabs(){
+        chrome.tabs.query({}, function(tabs) {
+            // Extract URLs from tabs
+            const urls = tabs.map(tab => tab.url);
+            
+            // Store URLs in session storage
+            chrome.storage.session.set({ 'SessionTabs': urls }, function() {
+                console.log('Open tabs URLs saved to session storage:', urls);
+                sendMessage("startCountdown", { mode: saveCurrentTabsToggle, seconds: defaultTime });
+            });
+        });
+    }
+
+    // for debugging
+    function getSessionTabs() {
+        chrome.storage.session.get('SessionTabs', function(result) {
+            // let links = result.SessionTabs || [];
+            console.log('Retrieved session links:', result);
+        });
+        // have another callback? to close the links
+    }
+
     document
         .getElementById("pauseResumeButton")
         .addEventListener("click", function () {
@@ -103,8 +127,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 sendMessage("resumeCountdown");
             } else if (programStatus === "NOT_STARTED") {
                 if (defaultTime > 0) {
-                    sendMessage("startCountdown", { seconds: defaultTime });
+                    
+                    // set this if statement if the user wants to save current tabs
+                    if(saveCurrentTabsToggle) {
+                        storeOpenedTabs();
+                    }
+                    else {
+                        sendMessage("startCountdown", { mode: saveCurrentTabsToggle, seconds: defaultTime });
+                    }
+                    
                     // sendMessage("removePurgedTab");
+                    // getSessionTabs();
                 }
                 else {
                     alert("Invalid input. Set the timer > 0 seconds.")
