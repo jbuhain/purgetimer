@@ -44,11 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('Retrieved links:', links);
             // Open each link in a separate tab
             links.forEach(function (link, index) {
-                // Ensure that the link includes the protocol (e.g., "http://" or "https://")
-                if (!link.match(/^https?:\/\//i)) {
-                    // If the link doesn't include the protocol, prepend "http://"
-                    link = "http://" + link;
-                }
                 // Open the link in a new tab
                 chrome.tabs.create({ url: link }, function(tab) {
                     // Check if this is the last link to be opened
